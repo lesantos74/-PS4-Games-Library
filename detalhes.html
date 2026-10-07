@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Detalhes do jogo - PS4 Games Library">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Detalhes do Jogo - PS4 Games Library</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">PS4</div>
+                    <div class="logo-text"><span>PS4</span> Games Library</div>
+                </a>
+                <div class="header-middle">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Pesquisar jogos..." oninput="pesquisaRedirecionar(this.value)" onkeydown="if(event.key==='Enter'){window.location.href='index.html?s='+encodeURIComponent(this.value);}">
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="index.html#catalogo" class="nav-link">Jogos</a>
+                    <a href="categorias.html" class="nav-link">Categorias</a>
+                    <a href="index.html#maisbaixados" class="nav-link">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link">Recentes</a>
+                    <a href="favoritos.html" class="nav-link">Favoritos</a>
+                    <a href="admin.html" class="nav-link nav-admin-secret" title="Admin" aria-label="Admin">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <nav class="breadcrumb" id="breadcrumb">
+                <a href="index.html"><i class="fas fa-home"></i> Início</a>
+                <span class="breadcrumb-separator">/</span>
+                <a href="categorias.html">Categorias</a>
+                <span class="breadcrumb-separator">/</span>
+                <span class="breadcrumb-current" id="breadcrumbCurrent">Carregando...</span>
+            </nav>
+
+            <div id="detailsContent">
+                <div class="loader" style="padding: 80px 20px;"><div class="spinner"></div></div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">PS4</div>
+                        <div class="logo-text"><span>PS4</span> Games Library</div>
+                    </a>
+                    <p>A sua biblioteca completa de jogos, aplicações, demos e homebrew autorizados para PlayStation 4.</p>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Navegação</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="categorias.html">Categorias</a></li>
+                        <li><a href="favoritos.html">Favoritos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Categorias</h4>
+                    <ul class="footer-links">
+                        <li><a href="categorias.html?cat=Ação">Ação</a></li>
+                        <li><a href="categorias.html?cat=RPG">RPG</a></li>
+                        <li><a href="categorias.html?cat=Corrida">Corrida</a></li>
+                        <li><a href="categorias.html?cat=Terror">Terror</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Sistema</h4>
+                    <ul class="footer-links">
+                        <li><a href="categorias.html?cat=Homebrew">Homebrew</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="screenshotModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('screenshotModal')"><i class="fas fa-close"></i></button>
+            <div class="modal-body" id="modalScreenshotBody"><img src="" alt="Screenshot"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/pesquisa.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function pesquisaRedirecionar(valor) {}
+
+        function getQueryParam(name) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(name);
+        }
+
+        function renderDetailsPage(game) {
+            const container = document.getElementById('detailsContent');
+            const breadcrumbCurrent = document.getElementById('breadcrumbCurrent');
+            if (breadcrumbCurrent) breadcrumbCurrent.textContent = game.nome;
+
+            document.title = game.nome + ' - PS4 Games Library';
+
+            const isFav = isFavorite(game.id);
+            let screenshotsHTML = '';
+            if (game.screenshots && game.screenshots.length > 0) {
+                game.screenshots.forEach(function(src) {
+                    screenshotsHTML +=
+                        '<div class="screenshot-item" onclick="showScreenshotModal(\'' + src + '\')">' +
+                            '<img src="' + src + '" alt="Screenshot" loading="lazy">' +
+                        '</div>';
+                });
+            }
+
+            const trailerHTML = renderSmartTrailer(game);
+
+            const reqEspaco = (game.requisitos && game.requisitos.espaco) ? game.requisitos.espaco : game.tamanho || '-';
+            const reqFirmware = (game.requisitos && game.requisitos.firmware) ? game.requisitos.firmware : '-';
+
+            const archiveBanner = (game.link && isArchiveOrgLink(game.link))
+                ? buildArchiveWarningHTML(game, false)
+                : '';
+
+            container.innerHTML =
+                '<section class="details-hero">' +
+                    '<div class="details-hero-bg" style="background-image: url(\'' + (game.banner || game.imagem || '') + '\');"></div>' +
+                    '<div class="details-hero-content">' +
+                        '<div class="details-cover">' +
+                            '<img src="' + (game.imagem || '') + '" alt="' + game.nome + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x400/1a1a1a/0055FF?text=Imagem\'">' +
+                        '</div>' +
+                        '<div class="details-info">' +
+                            '<span class="details-category-tag"><i class="fas fa-flag"></i> ' + (game.categoria || 'Geral') + '</span>' +
+                            '<h1 class="details-title">' + game.nome + '</h1>' +
+                            '<p class="details-sinopse">' + (game.sinopse || 'Sem descrição disponível.') + '</p>' +
+                            '<div class="details-stats">' +
+                                '<div class="stat-box"><span class="stat-value">' + (game.versao || '1.0') + '</span><span class="stat-label">Versão</span></div>' +
+                                '<div class="stat-box"><span class="stat-value">' + (game.tamanho || '-') + '</span><span class="stat-label">Tamanho</span></div>' +
+                                '<div class="stat-box"><span class="stat-value">' + formatDate(game.dataPublicacao) + '</span><span class="stat-label">Lançamento</span></div>' +
+                                '<div class="stat-box"><span class="stat-value" style="color: var(--success);">' + formatDownloads(game.downloads) + '</span><span class="stat-label">Downloads</span></div>' +
+                            '</div>' +
+                            '<div class="details-actions">' +
+                                '<a class="btn btn-primary btn-lg" href="' + (game.link || '#') + '" onclick="return handleDownload(' + game.id + ', this.href)" target="_blank" rel="noopener noreferrer">' +
+                                    '<i class="fas fa-download"></i> Baixar (Servidor 1)' +
+                                '</a>' +
+                                '<button class="btn btn-secondary btn-lg" onclick="return toggleFavorite(' + game.id + ', event)" data-fav-id="' + game.id + '">' +
+                                    '<i class="fas ' + (isFav ? 'heart' : 'heart-outline') + '"></i> ' + (isFav ? 'Remover Favorito' : 'Adicionar Favorito') +
+                                '</button>' +
+                                '<a class="btn btn-outline btn-lg" href="categorias.html?cat=' + encodeURIComponent(game.categoria || '') + '">' +
+                                    '<i class="fas fa-folder"></i> Ver Categoria' +
+                                '</a>' +
+                            '</div>' +
+                            archiveBanner +
+                        '</div>' +
+                    '</div>' +
+                '</section>' +
+
+                '<section class="details-section">' +
+                    '<h2 class="details-section-title"><i class="fas fa-cpu"></i> Requisitos</h2>' +
+                    '<div class="requirements-grid">' +
+                        '<div class="requirement-card">' +
+                            '<div class="requirement-icon"><i class="fas fa-hdd"></i></div>' +
+                            '<div class="requirement-text">' +
+                                '<span class="requirement-label">Espaço em Disco</span>' +
+                                '<span class="requirement-value">' + reqEspaco + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="requirement-card">' +
+                            '<div class="requirement-icon"><i class="fas fa-bolt"></i></div>' +
+                            '<div class="requirement-text">' +
+                                '<span class="requirement-label">Firmware</span>' +
+                                '<span class="requirement-value">' + reqFirmware + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="requirement-card">' +
+                            '<div class="requirement-icon"><i class="fas fa-box"></i></div>' +
+                            '<div class="requirement-text">' +
+                                '<span class="requirement-label">Servidor</span>' +
+                                '<span class="requirement-value">Servidor 1</span>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="requirement-card">' +
+                            '<div class="requirement-icon"><i class="fas fa-users"></i></div>' +
+                            '<div class="requirement-text">' +
+                                '<span class="requirement-label">Categoria</span>' +
+                                '<span class="requirement-value">' + (game.categoria || 'Geral') + '</span>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</section>' +
+
+                (screenshotsHTML ?
+                '<section class="details-section">' +
+                    '<h2 class="details-section-title"><i class="fas fa-image"></i> Galeria</h2>' +
+                    '<div class="screenshots-grid">' + screenshotsHTML + '</div>' +
+                '</section>' : '') +
+
+                trailerHTML +
+
+                '<div id="commentsContainer"></div>';
+
+            updateAllFavoriteButtons([game]);
+            setTimeout(function() {
+                if (typeof renderCommentsSection === 'function') {
+                    renderCommentsSection(game.id, 'commentsContainer');
+                }
+            }, 50);
+        }
+
+        function renderNotFound() {
+            document.getElementById('detailsContent').innerHTML =
+                '<div class="empty-state" style="padding: 80px 20px;">' +
+                    '<div class="empty-state-icon"><i class="fas fa-exclamation"></i></div>' +
+                    '<h3 class="empty-state-title">Jogo não encontrado</h3>' +
+                    '<p class="empty-state-desc">O jogo que procura não existe ou foi removido.</p>' +
+                    '<br><a href="index.html" class="btn btn-primary">Voltar ao Início</a>' +
+                '</div>';
+        }
+
+        function handleDownload(gameId, href) {
+            if (!smartHandleDownload(gameId, href)) return false;
+            const games = getAllGames();
+            const game = games.find(function(g) { return g.id === gameId; });
+            if (game) {
+                game.downloads = (game.downloads || 0) + 1;
+                saveGamesData(games);
+            }
+            showToast('Download iniciado...', 'success');
+            return true;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            headerScrollEffect();
+            mobileMenuToggle();
+            const overlay = document.getElementById('screenshotModal');
+            if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal('screenshotModal'); });
+
+            const searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                searchInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        window.location.href = 'index.html?s=' + encodeURIComponent(searchInput.value);
+                    }
+                });
+            }
+
+            loadGamesData().then(function() {
+                const idStr = getQueryParam('id');
+                const gameId = parseInt(idStr, 10);
+                const autoDownload = getQueryParam('download') === '1';
+                const games = getAllGames();
+                const game = games.find(function(g) { return g.id === gameId; });
+
+                if (game) {
+                    renderDetailsPage(game);
+                    if (autoDownload && game.link) {
+                        setTimeout(function() {
+                            if (isArchiveOrgLink(game.link)) {
+                                showArchiveModal(game.id);
+                            } else {
+                                handleDownload(game.id, game.link);
+                                window.open(game.link, '_blank');
+                            }
+                        }, 600);
+                    }
+                } else {
+                    renderNotFound();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

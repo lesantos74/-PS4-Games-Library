@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Categorias de jogos PS4 - PS4 Games Library">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Categorias - PS4 Games Library</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">PS4</div>
+                    <div class="logo-text"><span>PS4</span> Games Library</div>
+                </a>
+                <div class="header-middle">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Pesquisar jogos..." autocomplete="off">
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="index.html#catalogo" class="nav-link">Jogos</a>
+                    <a href="categorias.html" class="nav-link active">Categorias</a>
+                    <a href="index.html#maisbaixados" class="nav-link">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link">Recentes</a>
+                    <a href="favoritos.html" class="nav-link">Favoritos</a>
+                    <a href="admin.html" class="nav-link nav-admin-secret" title="Admin" aria-label="Admin">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-folder"></i> Categorias</h1>
+                <p class="page-subtitle">Explore a nossa biblioteca organizada por categorias. Encontre o tipo de conteúdo perfeito para si.</p>
+            </div>
+
+            <section class="section">
+                <div class="categories-full-grid" id="categoriesFullGrid">
+                    <!-- carregado via JS -->
+                </div>
+            </section>
+
+            <section class="section" id="categoriaSelecionadaSec" style="display: none;">
+                <div class="section-header">
+                    <h2 class="section-title" id="sectionCategoriaTitle">Jogos</h2>
+                    <button class="category-chip" onclick="clearCategoryFilter()" style="border-radius: 30px;">
+                        <i class="fas fa-close"></i> Limpar filtro
+                    </button>
+                </div>
+                <div class="categories-filter" id="categoriesFilter"></div>
+                <div class="games-grid" id="categoryGamesGrid">
+                    <div class="loader" style="grid-column: 1/-1;"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">PS4</div>
+                        <div class="logo-text"><span>PS4</span> Games Library</div>
+                    </a>
+                    <p>Biblioteca completa de jogos e conteúdos para PlayStation 4.</p>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Navegação</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="categorias.html">Categorias</a></li>
+                        <li><a href="favoritos.html">Favoritos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Top Categorias</h4>
+                    <ul class="footer-links">
+                        <li><a href="categorias.html?cat=Ação">Ação</a></li>
+                        <li><a href="categorias.html?cat=RPG">RPG</a></li>
+                        <li><a href="categorias.html?cat=Futebol">Futebol</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="screenshotModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('screenshotModal')"><i class="fas fa-close"></i></button>
+            <div class="modal-body" id="modalScreenshotBody"><img src="" alt="Screenshot"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/pesquisa.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        let CATEGORIA_ATIVA = null;
+
+        const CATEGORY_ICONS = {
+            'Ação': 'fire',
+            'Aventura': 'flag',
+            'Corrida': 'bolt',
+            'Futebol': 'star',
+            'RPG': 'gamepad',
+            'Luta': 'users',
+            'Shooter': 'download',
+            'Terror': 'exclamation',
+            'Homebrew': 'cpu',
+            'Aplicações': 'box'
+        };
+
+        function getQueryParam(name) {
+            return new URLSearchParams(window.location.search).get(name);
+        }
+
+        function renderCategoriesCards(games) {
+            const container = document.getElementById('categoriesFullGrid');
+            if (!container) return;
+            const allCategories = ['Todos'].concat(CATEGORIAS_LIST);
+            let html = '';
+            allCategories.forEach(function(cat) {
+                const count = getCategoryCount(games, cat);
+                const active = CATEGORIA_ATIVA === cat;
+                const icon = CATEGORY_ICONS[cat] || 'folder';
+                html +=
+                    '<div class="category-card ' + (active ? 'active' : '') + '" onclick="selectCategoryPage(\'' + cat + '\')">' +
+                        '<div class="category-card-icon"><i class="fas fa-' + icon + '"></i></div>' +
+                        '<div class="category-card-name">' + cat + '</div>' +
+                        '<div class="category-card-count">' + count + ' ' + (count === 1 ? 'item' : 'itens') + '</div>' +
+                    '</div>';
+            });
+            container.innerHTML = html;
+        }
+
+        function selectCategoryPage(cat) {
+            CATEGORIA_ATIVA = cat;
+            const games = getAllGames();
+            renderCategoriesCards(games);
+            const sec = document.getElementById('categoriaSelecionadaSec');
+            const title = document.getElementById('sectionCategoriaTitle');
+            if (sec) sec.style.display = 'block';
+            if (title) title.textContent = 'Categoria: ' + cat;
+
+            // Atualizar categoria chips
+            CURRENT_CATEGORY = cat;
+            renderCategoriesFilter();
+
+            filterAndRenderCategory();
+
+            if (cat === 'Todos') {
+                history.replaceState(null, '', 'categorias.html');
+            } else {
+                history.replaceState(null, '', 'categorias.html?cat=' + encodeURIComponent(cat));
+            }
+            document.getElementById('categoriaSelecionadaSec').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function clearCategoryFilter() {
+            selectCategoryPage('Todos');
+        }
+
+        function filterAndRenderCategory() {
+            let games = getAllGames();
+            if (CATEGORIA_ATIVA && CATEGORIA_ATIVA !== 'Todos') {
+                games = games.filter(function(g) { return g.categoria === CATEGORIA_ATIVA; });
+            }
+            const term = getCurrentSearchTerm();
+            games = searchGames(games, term);
+            renderGamesGrid('categoryGamesGrid', games);
+        }
+
+        // Override do applyGlobalFilter para página de categorias
+        applyGlobalFilter = function() {
+            filterAndRenderCategory();
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            headerScrollEffect();
+            mobileMenuToggle();
+            const overlay = document.getElementById('screenshotModal');
+            if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal('screenshotModal'); });
+
+            loadGamesData().then(function(games) {
+                CATEGORIA_ATIVA = getQueryParam('cat') || null;
+                renderCategoriesCards(games);
+                if (CATEGORIA_ATIVA) {
+                    selectCategoryPage(CATEGORIA_ATIVA);
+                }
+                initSearch();
+            });
+        });
+    </script>
+</body>
+</html>

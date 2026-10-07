@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Meus jogos favoritos - PS4 Games Library">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Favoritos - PS4 Games Library</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">PS4</div>
+                    <div class="logo-text"><span>PS4</span> Games Library</div>
+                </a>
+                <div class="header-middle">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Pesquisar nos favoritos..." autocomplete="off">
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="index.html#catalogo" class="nav-link">Jogos</a>
+                    <a href="categorias.html" class="nav-link">Categorias</a>
+                    <a href="index.html#maisbaixados" class="nav-link">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link">Recentes</a>
+                    <a href="favoritos.html" class="nav-link active">Favoritos</a>
+                    <a href="admin.html" class="nav-link nav-admin-secret" title="Admin" aria-label="Admin">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+
+            <div class="page-header">
+                <h1 class="page-title"><i class="fas fa-heart"></i> Meus Favoritos</h1>
+                <p class="page-subtitle" id="pageSubtitle">Os seus jogos preferidos guardados num só lugar.</p>
+            </div>
+
+            <section class="section">
+                <div class="section-header" id="sectionHeaderFav" style="display: none;">
+                    <h2 class="section-title"><span id="favCount">0</span> jogo(s) favorito(s)</h2>
+                    <button class="btn btn-danger btn-sm" onclick="clearAllFavorites()">
+                        <i class="fas fa-trash"></i> Limpar todos
+                    </button>
+                </div>
+                <div class="games-grid" id="favoritesGrid">
+                    <div class="loader" style="grid-column: 1/-1;"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">PS4</div>
+                        <div class="logo-text"><span>PS4</span> Games Library</div>
+                    </a>
+                    <p>Biblioteca completa de jogos e conteúdos para PlayStation 4.</p>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Navegação</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="categorias.html">Categorias</a></li>
+                        <li><a href="favoritos.html">Favoritos</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title">Top Categorias</h4>
+                    <ul class="footer-links">
+                        <li><a href="categorias.html?cat=Ação">Ação</a></li>
+                        <li><a href="categorias.html?cat=RPG">RPG</a></li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="modal-overlay" id="screenshotModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('screenshotModal')"><i class="fas fa-close"></i></button>
+            <div class="modal-body" id="modalScreenshotBody"><img src="" alt="Screenshot"></div>
+        </div>
+    </div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/pesquisa.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        function renderFavoritesPage() {
+            const favIds = getFavorites();
+            const allGames = getAllGames();
+            let favoriteGames = allGames.filter(function(g) { return favIds.indexOf(g.id) > -1; });
+
+            const term = getCurrentSearchTerm();
+            favoriteGames = searchGames(favoriteGames, term);
+
+            const header = document.getElementById('sectionHeaderFav');
+            const countEl = document.getElementById('favCount');
+            const subtitle = document.getElementById('pageSubtitle');
+
+            if (favIds.length === 0) {
+                if (header) header.style.display = 'none';
+                if (subtitle) subtitle.textContent = 'Ainda não tem favoritos. Comece por adicionar jogos aos seus favoritos!';
+                const container = document.getElementById('favoritesGrid');
+                if (container) {
+                    container.innerHTML =
+                        '<div class="empty-state" style="grid-column: 1/-1;">' +
+                            '<div class="empty-state-icon" style="color: var(--danger);"><i class="fas fa-heart"></i></div>' +
+                            '<h3 class="empty-state-title">Sem favoritos ainda</h3>' +
+                            '<p class="empty-state-desc">Clique no coração nos cartões de jogos para os guardar aqui.</p>' +
+                            '<br><a href="index.html#catalogo" class="btn btn-primary">Explorar Catálogo</a>' +
+                        '</div>';
+                }
+            } else {
+                if (header) header.style.display = 'flex';
+                if (countEl) countEl.textContent = favoriteGames.length;
+                if (subtitle) subtitle.textContent = 'Os seus jogos preferidos guardados num só lugar.';
+                renderGamesGrid('favoritesGrid', favoriteGames);
+            }
+        }
+
+        function clearAllFavorites() {
+            if (confirm('Tem a certeza que deseja remover TODOS os favoritos?')) {
+                saveFavorites([]);
+                showToast('Todos os favoritos foram removidos', 'warning');
+                renderFavoritesPage();
+            }
+        }
+
+        // Override do applyGlobalFilter
+        applyGlobalFilter = function() {
+            renderFavoritesPage();
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            headerScrollEffect();
+            mobileMenuToggle();
+            const overlay = document.getElementById('screenshotModal');
+            if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal('screenshotModal'); });
+
+            loadGamesData().then(function() {
+                renderFavoritesPage();
+                initSearch();
+            });
+        });
+    </script>
+</body>
+</html>

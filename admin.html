@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Painel Administrativo - PS4 Games Library (Acesso Restrito)">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Painel Admin - PS4 Games Library</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Login Screen */
+        .login-wrapper {
+            min-height: calc(100vh - 100px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .login-box {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 40px;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+        }
+        .login-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-primary), #0044cc);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            color: white;
+            box-shadow: var(--shadow-accent);
+        }
+        .login-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+        .login-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            text-align: left;
+        }
+        .login-form .form-group {
+            margin: 0;
+        }
+        .login-error {
+            display: none;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            padding: 10px 14px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+        }
+        .login-error.show { display: block; }
+        .admin-logout-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 10px 14px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+        }
+        .admin-logged-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .admin-logged-info strong {
+            color: var(--success);
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">PS4</div>
+                    <div class="logo-text"><span>PS4</span> Games Library</div>
+                </a>
+                <div class="header-middle">
+                    <div class="search-box" id="adminSearchBox" style="display:none;">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="adminSearchInput" placeholder="Pesquisar jogos..." autocomplete="off">
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+                <nav class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link">Início</a>
+                    <a href="categorias.html" class="nav-link">Categorias</a>
+                    <a href="favoritos.html" class="nav-link">Favoritos</a>
+                    <a href="admin.html" class="nav-link active">Admin</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+
+            <!-- TELA DE LOGIN -->
+            <div class="login-wrapper" id="loginScreen">
+                <div class="login-box">
+                    <div class="login-icon"><i class="fas fa-bolt"></i></div>
+                    <h2 class="login-title">Acesso Restrito</h2>
+                    <p class="login-subtitle">Área administrativa. Introduza a senha para continuar.</p>
+                    <div class="login-error" id="loginError">Senha incorreta. Tente novamente.</div>
+                    <form class="login-form" id="loginForm" onsubmit="return doLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label">Senha de Administrador</label>
+                            <input type="password" id="passwordInput" class="form-input" placeholder="••••••••" autocomplete="off" autofocus required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+                            <i class="fas fa-check"></i> Entrar
+                        </button>
+                        <p style="font-size: 11px; color: var(--text-muted); text-align: center; margin: 8px 0 0;">
+                            Senha padrão: <strong>admin123</strong> (altere no painel após login)
+                        </p>
+                    </form>
+                </div>
+            </div>
+
+            <!-- PAINEL ADMIN (após login) -->
+            <div id="adminContent" style="display: none;">
+
+                <div class="page-header">
+                    <h1 class="page-title"><i class="fas fa-cpu"></i> Painel Administrativo</h1>
+                    <p class="page-subtitle">Gere a biblioteca: adicione, edite, remova jogos e atualize informações.</p>
+                </div>
+
+                <div class="admin-logout-bar">
+                    <div class="admin-logged-info">
+                        <i class="fas fa-users"></i>
+                        Sessão: <strong>Administrador</strong>
+                        <span style="margin: 0 8px; color: var(--border-color);">|</span>
+                        Senha atual: <strong id="currentPassIndicator">••••••••</strong>
+                    </div>
+                    <button class="btn btn-secondary btn-sm" onclick="openChangePassword()">
+                        <i class="fas fa-edit"></i> Alterar Senha
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="doLogout()">
+                        <i class="fas fa-close"></i> Terminar Sessão
+                    </button>
+                </div>
+
+                <div class="admin-tabs" id="adminTabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('listar', this)">
+                        <i class="fas fa-folder"></i> Lista de Jogos
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('adicionar', this)">
+                        <i class="fas fa-plus"></i> Adicionar Jogo
+                    </button>
+                    <button class="admin-tab" onclick="switchAdminTab('backups', this)">
+                        <i class="fas fa-clock-rotate-left"></i> Backups <span class="backup-counter" id="totalBackups">0</span>
+                    </button>
+                    <button class="admin-tab" onclick="exportJSON()">
+                        <i class="fas fa-download"></i> Exportar JSON
+                    </button>
+                    <button class="admin-tab" onclick="resetToDefault()">
+                        <i class="fas fa-trash"></i> Restaurar Padrão
+                    </button>
+                </div>
+
+                <!-- SECÇÃO LISTAR -->
+                <section id="tab-listar">
+                    <div class="section-header" style="margin-bottom: 16px;">
+                        <h2 class="section-title">Total de Jogos: <span id="totalJogos">0</span></h2>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table" id="adminTable">
+                            <thead>
+                                <tr>
+                                    <th>Jogo</th>
+                                    <th>Categoria</th>
+                                    <th>Versão</th>
+                                    <th>Tamanho</th>
+                                    <th>Downloads</th>
+                                    <th>Servidor</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTableBody">
+                                <tr><td colspan="7" style="text-align: center; padding: 40px;"><div class="spinner" style="margin: 0 auto;"></div></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SECÇÃO ADICIONAR / EDITAR -->
+                <section id="tab-adicionar" style="display: none;">
+                    <h2 class="section-title" id="formTitle" style="margin-bottom: 24px;">
+                        <i class="fas fa-plus"></i> Adicionar Novo Jogo
+                    </h2>
+                    <form class="admin-form" id="gameForm" onsubmit="return saveGameSubmit(event)">
+                        <input type="hidden" id="gameIdInput">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Nome <span class="required">*</span></label>
+                                <input type="text" class="form-input" id="gameNome" required placeholder="Nome completo do jogo">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Categoria <span class="required">*</span></label>
+                                <select class="form-select" id="gameCategoria" required>
+                                    <option value="">Selecione...</option>
+                                    <option>Ação</option>
+                                    <option>Aventura</option>
+                                    <option>Corrida</option>
+                                    <option>Futebol</option>
+                                    <option>RPG</option>
+                                    <option>Luta</option>
+                                    <option>Shooter</option>
+                                    <option>Terror</option>
+                                    <option>Homebrew</option>
+                                    <option>Aplicações</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Versão</label>
+                                <input type="text" class="form-input" id="gameVersao" placeholder="Ex: 1.00">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Tamanho</label>
+                                <input type="text" class="form-input" id="gameTamanho" placeholder="Ex: 50 GB">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Data de Publicação</label>
+                                <input type="date" class="form-input" id="gameData">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Downloads</label>
+                                <input type="number" class="form-input" id="gameDownloads" value="0" min="0">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">URL da Capa</label>
+                                <input type="url" class="form-input" id="gameImagem" placeholder="https://.../capa.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">URL do Banner</label>
+                                <input type="url" class="form-input" id="gameBanner" placeholder="https://.../banner.jpg">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link de Download</label>
+                                <input type="url" class="form-input" id="gameLink" placeholder="https://servidor.com/jogo.pkg">
+                            </div>
+                            <div class="form-group" style="display:none;">
+                                <label class="form-label">Servidor</label>
+                                <input type="text" class="form-input" id="gameServidor" value="Servidor 1" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Link do Trailer (YouTube embed ou MP4)</label>
+                                <input type="url" class="form-input" id="gameTrailer" placeholder="https://www.youtube.com/embed/...  ou  .mp4">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Espaço Requisitado</label>
+                                <input type="text" class="form-input" id="gameReqEspaco" placeholder="Ex: 55 GB">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Firmware Requisitado</label>
+                                <input type="text" class="form-input" id="gameReqFirmware" placeholder="Ex: 9.00+">
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">Sinopse</label>
+                                <textarea class="form-textarea" id="gameSinopse" rows="4" placeholder="Descrição detalhada do jogo..."></textarea>
+                            </div>
+                            <div class="form-group full-width">
+                                <label class="form-label">URLs Screenshots (separadas por vírgula)</label>
+                                <textarea class="form-textarea" id="gameScreenshots" rows="2" placeholder="https://.../img1.jpg, https://.../img2.jpg"></textarea>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                                <i class="fas fa-close"></i> Limpar
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="formSubmitBtn">
+                                <i class="fas fa-plus"></i> Adicionar Jogo
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- SECÇÃO BACKUPS -->
+                <section id="tab-backups" style="display: none;">
+                    <div class="section-header" style="margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+                        <h2 class="section-title">
+                            <i class="fas fa-shield-halved" style="color: var(--accent-primary);"></i>
+                            Backups Automáticos &amp; Deploy GitHub Pages
+                        </h2>
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="btn btn-secondary" onclick="createManualBackup()">
+                                <i class="fas fa-plus"></i> Criar Backup Agora
+                            </button>
+                            <button class="btn btn-primary" onclick="exportCurrentDataJSON()" style="background: linear-gradient(135deg, #10b981, #059669); border: none;">
+                                <i class="fas fa-file-export"></i> Exportar p/ Deploy (jogos.json)
+                            </button>
+                            <button class="btn btn-secondary" onclick="importJSONBackup()">
+                                <i class="fas fa-upload"></i> Importar JSON
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="backup-info-banner" style="border-left: 4px solid #f59e0b; background: rgba(245, 158, 11, 0.08); margin-bottom: 18px;">
+                        <i class="fas fa-cloud-arrow-up" style="color: #f59e0b;"></i>
+                        <div>
+                            <strong style="color: #fbbf24;">👉 Publicar no GitHub Pages com os seus jogos:</strong>
+                            <ol style="margin: 8px 0 0 20px; padding: 0; font-size: 13px; color: var(--text-secondary); line-height: 1.8;">
+                                <li>Clique no botão <strong style="color: var(--text-primary);">"Exportar p/ Deploy (jogos.json)"</strong> acima — irá baixar um arquivo <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">jogos.json</code> com todos os seus jogos cadastrados.</li>
+                                <li>Substitua o arquivo original na pasta <code style="background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px;">data/jogos.json</code> pelo que acabou de baixar.</li>
+                                <li>Faça <strong>commit</strong> e <strong>push</strong> das alterações para o repositório do GitHub.</li>
+                                <li>Aguarde 1-2 minutos o GitHub Pages atualizar. Ao abrir o site, <strong>os seus jogos serão carregados automaticamente</strong> e salvos no localStorage de quem acessar.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <div class="backup-info-banner">
+                        <i class="fas fa-circle-info"></i>
+                        <div>
+                            <strong>Segurança dos seus dados:</strong>
+                            <p style="margin: 4px 0 0; font-size: 13px; color: var(--text-secondary);">Sempre que você <em>editar, adicionar, excluir ou restaurar</em> os jogos, um snapshot automático é salvo aqui (até os últimos 10). Você pode restaurar qualquer um deles a qualquer momento.</p>
+                        </div>
+                    </div>
+
+                    <div class="backups-list" id="backupsList"></div>
+
+                    <input type="file" id="backupFileInput" accept=".json" style="display: none;" onchange="handleBackupFileImport(event)">
+                </section>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL ALTERAR SENHA -->
+    <div class="modal-overlay" id="passwordModal">
+        <div class="modal-content" style="max-width: 440px;">
+            <button class="modal-close" onclick="closeModal('passwordModal')"><i class="fas fa-close"></i></button>
+            <div class="modal-body">
+                <h2 class="section-title" style="margin: 0 0 20px;"><i class="fas fa-edit"></i> Alterar Senha</h2>
+                <form onsubmit="return saveNewPassword(event)" style="display: flex; flex-direction: column; gap: 14px;">
+                    <div class="form-group">
+                        <label class="form-label">Senha Atual</label>
+                        <input type="password" class="form-input" id="oldPass" required placeholder="••••••••">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Nova Senha (mín. 6 caracteres)</label>
+                        <input type="password" class="form-input" id="newPass" required minlength="6" placeholder="Nova senha">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirmar Nova Senha</label>
+                        <input type="password" class="form-input" id="newPass2" required minlength="6" placeholder="Confirmar senha">
+                    </div>
+                    <div class="form-actions" style="padding-top: 10px; border: none;">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal('passwordModal')">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar Senha</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2026 PS4 Games Library - Painel Administrativo. Acesso restrito.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="js/i18n.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/pesquisa.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof applyI18n === 'function') applyI18n();
+            headerScrollEffect();
+            mobileMenuToggle();
+            if (typeof ensureLangSelectorInNav === 'function') ensureLangSelectorInNav();
+            initAdminAuth();
+            loadGamesData().then(function() {
+                if (isAdminLoggedIn()) {
+                    initAdminPanel();
+                    showAdminContent();
+                }
+            });
+            const pwModal = document.getElementById('passwordModal');
+            if (pwModal) pwModal.addEventListener('click', function(e) { if (e.target === pwModal) closeModal('passwordModal'); });
+        });
+    </script>
+</body>
+</html>

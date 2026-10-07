@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar Jogos de TXT → JSON do Catálogo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+        .card h1 {
+            font-size: 26px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        .sub {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+        textarea.tarea {
+            width: 100%;
+            min-height: 320px;
+            background: #0c0c14;
+            color: #e2e8f0;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+        }
+        textarea.tarea:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 14px;
+        }
+        .preview {
+            margin-top: 20px;
+            max-height: 380px;
+            overflow: auto;
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+        table.tbl {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        table.tbl th, table.tbl td {
+            padding: 8px 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+            vertical-align: top;
+        }
+        table.tbl th {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-primary);
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+        }
+        table.tbl tr:hover td {
+            background: rgba(255,255,255,0.03);
+        }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .badge.ok { background: rgba(16,185,129,0.18); color: #34d399; }
+        .badge.warn { background: rgba(245,158,11,0.18); color: #fbbf24; }
+        .badge.err { background: rgba(239,68,68,0.18); color: #f87171; }
+        .formats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+        .format-card {
+            background: var(--surface-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        .format-card b { color: var(--text-primary); }
+        pre.code {
+            background: #0a0a0a;
+            color: #cbd5e1;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 11px;
+            margin: 6px 0 0;
+            overflow: auto;
+        }
+        .btn-xl {
+            font-size: 17px !important;
+            padding: 16px 26px !important;
+            font-weight: 800 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+
+        <div class="card">
+            <h1><i class="fas fa-file-import"></i> Importador de TXT → Catálogo JSON</h1>
+            <p class="sub">Cole abaixo o conteúdo do SEU arquivo TXT com seus jogos, links de download etc. Clique em <strong>Converter</strong> e depois em <strong>Salvar no Catálogo</strong>.</p>
+
+            <div class="formats">
+                <div class="format-card">
+                    <b>✅ Formato 1 — Campos por linha (recomendado):</b>
+                    <pre class="code">Jogo: EA SPORTS FC 27
+Categoria: Futebol
+Versão: 1.03
+Tamanho: 85 GB
+Link: https://exemplo.com/fc27.pkg
+Firmware: 9.00+
+Data: 2026-09-28
+Downloads: 2340
+---
+Jogo: Little Nightmares 3...</pre>
+                </div>
+                <div class="format-card">
+                    <b>✅ Formato 2 — Lista simples com URLs:</b>
+                    <pre class="code">1. EA SPORTS FC 27 [Futebol] https://link
+2. Little Nightmares 3 [Aventura] 30 GB https://link
+3. Farpoint 1.08 [Shooter] 45 GB https://link</pre>
+                </div>
+                <div class="format-card">
+                    <b>✅ Formato 3 — Separado por vírgula:</b>
+                    <pre class="code">nome,categoria,tamanho,link,versao
+"FC 27","Futebol","85 GB","https://...","1.03"
+"Little Nightmares 3","Aventura","30 GB","https://...","1.02"</pre>
+                </div>
+                <div class="format-card">
+                    <b>💡 Dica:</b>
+                    <div>Cada jogo separado por uma linha em branco ou <code>---</code>. O programa detecta automaticamente os campos.</div>
+                    <div style="margin-top:6px;">Os jogos são salvos em <code>data/jogos.json</code> e depois é só rodar o <code>deploy-catalogo.ps1</code>.</div>
+                </div>
+            </div>
+
+            <div>
+                <label style="font-size:13px; color: var(--text-secondary); margin-bottom:6px; display:block;"><i class="fas fa-file-lines"></i> Cole aqui o conteúdo do seu arquivo .txt:</label>
+                <textarea id="txtInput" class="tarea" placeholder="Cole aqui todo o conteúdo do seu TXT com os jogos e links..."></textarea>
+            </div>
+
+            <div class="row">
+                <button class="btn btn-primary btn-xl" onclick="converterTxt()" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); border:none;">
+                    <i class="fas fa-wand-magic-sparkles"></i> 1. CONVERTER TXT → JOGOS
+                </button>
+                <button class="btn btn-secondary btn-xl" onclick="carregarExemplo()">
+                    <i class="fas fa-lightbulb"></i> Carregar Exemplo
+                </button>
+                <button class="btn btn-secondary btn-xl" onclick="limparTudo()">
+                    <i class="fas fa-eraser"></i> Limpar
+                </button>
+            </div>
+
+            <div id="statusArea" style="margin-top: 16px;"></div>
+
+            <div id="previewArea" style="display:none;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin: 24px 0 12px; flex-wrap:wrap; gap:10px;">
+                    <h3 style="margin:0; color:var(--text-primary);"><i class="fas fa-table-list"></i> Prévia dos Jogos Detectados: <span id="countTotal" style="color: var(--accent-primary);">0</span></h3>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <button class="btn btn-secondary btn-sm" onclick="downloadJSON()">
+                            <i class="fas fa-download"></i> Baixar jogos.json
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="salvarNoCatalogo()" style="background: linear-gradient(135deg, #10b981, #059669); border:none;">
+                            <i class="fas fa-floppy-disk"></i> 2. SALVAR NO CATÁLOGO
+                        </button>
+                    </div>
+                </div>
+                <div class="preview">
+                    <table class="tbl">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">#</th>
+                                <th>Nome do Jogo</th>
+                                <th>Categoria</th>
+                                <th>Versão</th>
+                                <th>Tamanho</th>
+                                <th>Link Download</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="salvoCard" style="display:none;">
+            <h2 style="color: #10b981; margin:0 0 10px;"><i class="fas fa-circle-check"></i> SALVO NO CATÁLOGO!</h2>
+            <p style="color: var(--text-secondary); margin: 0 0 16px;">Os jogos foram salvos em <code>data/jogos.json</code>. Agora é só rodar o script de deploy:</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                <a href="deploy-catalogo.ps1" class="btn btn-primary btn-xl" style="background: linear-gradient(135deg, #f59e0b, #d97706); border:none; text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fas fa-rocket"></i> Abrir deploy-catalogo.ps1 (envia para GitHub)
+                </a>
+                <a href="sincronizar-jogos.html" class="btn btn-secondary btn-xl" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px;">
+                    <i class="fas fa-arrow-left"></i> Voltar para Sincronizar
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+    <script>
+        let JOGOS_DETECTADOS = [];
+
+        function limparTudo() {
+            document.getElementById('txtInput').value = '';
+            document.getElementById('previewArea').style.display = 'none';
+            document.getElementById('salvoCard').style.display = 'none';
+            document.getElementById('statusArea').innerHTML = '';
+            JOGOS_DETECTADOS = [];
+        }
+
+        function carregarExemplo() {
+            document.getElementById('txtInput').value =
+`Jogo: EA SPORTS FC 27
+Categoria: Futebol
+Versão: 1.03
+Tamanho: 85 GB
+Data: 2026-09-28
+Firmware: 9.00+
+Downloads: 2340
+Servidor: Servidor 1
+Link: https://exemplo.com/fc27.pkg
+Sinopse: O EA SPORTS FC 27 traz os times atualizados, novo motor de jogo e as ligas mais populares do mundo.
+---
+Jogo: Little Nightmares 3 Deluxe Edition
+Categoria: Aventura
+Versão: 1.02
+Tamanho: 30 GB
+Data: 2026-09-20
+Firmware: 9.00+
+Downloads: 1450
+Link: https://exemplo.com/little-nightmares-3.pkg
+Sinopse: A terrivelmente adorável franquia de suspense retorna com uma nova jornada de pesadelo.
+---
+Jogo: Farpoint
+Categoria: Shooter
+Versão: 1.08
+Tamanho: 45 GB
+Data: 2026-08-15
+Firmware: 5.05+
+Downloads: 890
+Link: https://exemplo.com/farpoint.pkg
+Sinopse: FPS exclusivo para PS VR onde você explora um planeta alienígena hostil.
+---
+Jogo: Minecraft
+Categoria: Aventura
+Versão: 2.74
+Tamanho: 320 MB
+Data: 2026-09-01
+Firmware: 9.00+
+Downloads: 5600
+Link: https://exemplo.com/minecraft.pkg
+Sinopse: Construa, explore e sobreviva no mundo infinito do Minecraft no seu PS4.
+---
+Jogo: Pinball FX
+Categoria: Aplicações
+Versão: 1.15
+Tamanho: 18 GB
+Data: 2026-09-10
+Firmware: 11.00+
+Downloads: 780
+Link: https://exemplo.com/pinball-fx.pkg
+Sinopse: A maior coleção de mesas de pinball do mundo com DLCs desbloqueados.
+---
+Jogo: PS4 Save Mounter
+Categoria: Homebrew
+Versão: 2.1.0
+Tamanho: 85 MB
+Data: 2026-09-24
+Firmware: 9.00+
+Downloads: 7200
+Link: https://exemplo.com/ps4-save-mounter.pkg
+Sinopse: Ferramenta essencial para montar, extrair e modificar saves de jogos PS4.`;
+            converterTxt();
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/[&<>"']/g, function(c) {
+                return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+            });
+        }
+
+        function statusBox(tipo, msg) {
+            var cores = {ok:'#10b981', info:'#3b82f6', warn:'#f59e0b', err:'#ef4444'};
+            var icones = {ok:'fa-circle-check', info:'fa-circle-info', warn:'fa-triangle-exclamation', err:'fa-circle-exclamation'};
+            document.getElementById('statusArea').innerHTML =
+                '<div style="padding:14px 18px; border-radius:10px; border-left:4px solid '+cores[tipo]+'; background: '+cores[tipo]+'15; color: '+cores[tipo]+'; display:flex; gap:12px; align-items:flex-start;">'+
+                    '<i class="fas '+icones[tipo]+'" style="margin-top:2px;"></i>'+
+                    '<div style="flex:1; line-height:1.6;">'+msg+'</div>'+
+                '</div>';
+        }
+
+        function detectarCategoria(nome) {
+            var n = (nome || '').toLowerCase();
+            if (/fc|fifa|futebol|efootball|pes|soccer|futbol/.test(n)) return 'Futebol';
+            if (/corrida|racing|gran turismo|need for speed|forza|nfs|f1|formula/.test(n)) return 'Corrida';
+            if (/shooter|fps|call of duty|battlefield|farpoint|cod|mw|war/.test(n)) return 'Shooter';
+            if (/luta|fight|street fighter|mortal kombat|tekken|kombat/.test(n)) return 'Luta';
+            if (/terror|horror|resident evil|silent hill|outlast|horror|pesadelo|nightmare/.test(n)) return 'Terror';
+            if (/rpg|elden ring|cyberpunk|witcher|skyrim|dark souls|final fantasy/.test(n)) return 'RPG';
+            if (/aventura|adventure|uncharted|the last of us|spider.?man|god of war|little nightmares|platform|minecraft/.test(n)) return 'Aventura';
+            if (/ação|action|acao|god of war|spider.?man|sackboy|crash/.test(n)) return 'Ação';
+            if (/homebrew|retroarch|emulador|emulator|save mounter|apollo|jailbreak/.test(n)) return 'Homebrew';
+            if (/player|vlc|media|ftp|store|app|aplicação|aplicacao|pinball/.test(n)) return 'Aplicações';
+            return 'Ação';
+        }
+
+        function gerarId() {
+            return Math.floor(Date.now() / 1000) + Math.floor(Math.random() * 900000) + 100000;
+        }
+
+        function parseBloco(bloco) {
+            var jogo = {};
+            var linhas = bloco.split(/\r?\n/).map(function(l){return l.trim()}).filter(Boolean);
+            linhas.forEach(function(linha) {
+                // Padrão chave: valor
+                var m = linha.match(/^(\w+[\s\w]*?)[:：]\s*(.+)$/i);
+                if (m) {
+                    var k = removerAcentos(m[1].toLowerCase().trim());
+                    var v = m[2].trim();
+                    if (/^nome$|^jogo$|^titulo$|^título$/.test(k)) jogo.nome = v;
+                    else if (/^categoria$|^genero$|^gênero$|^tipo$/.test(k)) jogo.categoria = v;
+                    else if (/^versao$|^versão$|^version$|^ver$/.test(k)) jogo.versao = v;
+                    else if (/^tamanho$|^size$|^tamanho do arquivo$/.test(k)) jogo.tamanho = v;
+                    else if (/^link$|^download$|^url$|^magnet$|^servidor|^download link$|^link de download$/.test(k)) jogo.link = v;
+                    else if (/^data$|^data de lancamento$|^lançamento$|^lancamento$|^data de publicacao$|^publicacao$/.test(k)) jogo.dataPublicacao = v;
+                    else if (/^downloads$|^qtd downloads$|^numero de downloads$/.test(k)) jogo.downloads = parseInt(v.replace(/[^\d]/g,''),10) || 0;
+                    else if (/^firmware$|^fw$|^requisitos firmware$/.test(k)) {
+                        jogo.requisitos = jogo.requisitos || {};
+                        jogo.requisitos.firmware = v;
+                    }
+                    else if (/^espaco$|^espaço$|^requisitos espaco$|^requisitos espaço$/.test(k)) {
+                        jogo.requisitos = jogo.requisitos || {};
+                        jogo.requisitos.espaco = v;
+                    }
+                    else if (/^servidor$|^local$/.test(k)) jogo.servidor = v;
+                    else if (/^sinopse$|^descricao$|^descrição$|^sobre$|^resumo$/.test(k)) jogo.sinopse = v;
+                    else if (/^trailer$|^video$|^youtube$/.test(k)) jogo.trailer = v;
+                    else if (/^imagem$|^capa$|^imagem da capa$|^capa do jogo$/.test(k)) jogo.imagem = v;
+                    else if (/^banner$|^imagem banner$|^capa banner$/.test(k)) jogo.banner = v;
+                    return;
+                }
+
+                // Padrão inline: Nome [Categoria] Tamanho URL
+                var inlineURL = linha.match(/(https?:\/\/[^\s]+)/);
+                if (inlineURL) {
+                    jogo.link = inlineURL[1];
+                    var resto = linha.replace(inlineURL[1], '').trim();
+                    // Tamanho
+                    var tam = resto.match(/(\d+[\.\,]\d*\s*(?:GB|MB|KB))/i);
+                    if (tam) jogo.tamanho = tam[0].replace('.',',');
+                    // Categoria entre [ ]
+                    var cat = resto.match(/\[\s*([^\]]+?)\s*\]/);
+                    if (cat) jogo.categoria = cat[1];
+                    // Nome: tudo antes de [ ou primeiro número com GB/MB
+                    var nomeTemp = resto.replace(/\[[^\]]*\]/g,'').replace(/(\d+[\.\,]\d*\s*(?:GB|MB|KB))/gi,'').replace(/^\d+\s*[\.\)\-]\s*/,'').trim();
+                    if (nomeTemp && !jogo.nome) jogo.nome = nomeTemp;
+                }
+
+                // CSV
+                if (linha.indexOf(',') !== -1 && !jogo.nome) {
+                    var partes = linha.split(',').map(function(s){return s.trim().replace(/^"|"$/g,'')});
+                    if (partes.length >= 4) {
+                        if (!/^nome,/i.test(linha)) {
+                            jogo.nome = partes[0];
+                            jogo.categoria = partes[1];
+                            jogo.tamanho = partes[2];
+                            jogo.link = partes[3];
+                            if (partes[4]) jogo.versao = partes[4];
+                        }
+                    }
+                }
+            });
+
+            if (!jogo.nome) return null;
+            if (!jogo.id) jogo.id = gerarId();
+            if (!jogo.categoria) jogo.categoria = detectarCategoria(jogo.nome);
+            if (!jogo.versao) jogo.versao = '1.00';
+            if (!jogo.tamanho) jogo.tamanho = '-';
+            if (!jogo.servidor) jogo.servidor = 'Servidor 1';
+            if (!jogo.downloads) jogo.downloads = 100;
+            if (!jogo.dataPublicacao) jogo.dataPublicacao = new Date().toISOString().split('T')[0];
+            if (!jogo.link) jogo.link = '';
+            if (!jogo.requisitos) jogo.requisitos = { espaco: jogo.tamanho, firmware: '9.00+' };
+            if (!jogo.requisitos.espaco) jogo.requisitos.espaco = jogo.tamanho;
+            if (!jogo.requisitos.firmware) jogo.requisitos.firmware = '9.00+';
+            if (!jogo.sinopse) jogo.sinopse = jogo.nome + ' - ' + jogo.categoria + '. Disponível para download no seu PS4.';
+            if (!jogo.imagem) {
+                var p = encodeURIComponent(jogo.nome + ' ps4 game cover ' + jogo.categoria);
+                jogo.imagem = 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=' + p + '&image_size=square_hd';
+            }
+            if (!jogo.banner) {
+                var p2 = encodeURIComponent(jogo.nome + ' ps4 game banner hero epic ' + jogo.categoria);
+                jogo.banner = 'https://coresg-normal.trae.ai/api/ide/v1/text_to_image?prompt=' + p2 + '&image_size=landscape_16_9';
+            }
+            if (!jogo.screenshots) jogo.screenshots = [jogo.banner, jogo.imagem, jogo.banner];
+            if (!jogo.trailer) jogo.trailer = '';
+            return jogo;
+        }
+
+        function removerAcentos(str) {
+            return String(str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        }
+
+        function converterTxt() {
+            var raw = document.getElementById('txtInput').value || '';
+            if (!raw.trim()) {
+                statusBox('warn', 'O campo TXT está vazio. Cole os dados dos seus jogos primeiro.');
+                return;
+            }
+
+            var blocos = raw.split(/^\s*---+\s*$/m).join('\n\n').split(/\n\s*\n\s*\n*/);
+            if (blocos.length === 1 && raw.split('\n').filter(function(l){return l.trim()}).length > 1) {
+                // Tenta dividir por linhas em branco duplas
+                blocos = raw.split(/\r?\n\r?\n/);
+            }
+
+            var jogos = [];
+            blocos.forEach(function(b) {
+                if (!b || !b.trim()) return;
+                var parsed = parseBloco(b);
+                if (parsed) jogos.push(parsed);
+            });
+
+            if (jogos.length === 0) {
+                statusBox('err', 'Nenhum jogo válido detectado no TXT. Tente usar o formato "Jogo: Nome", "Link: url", etc. Ou clique em "Carregar Exemplo" para ver o formato.');
+                return;
+            }
+
+            JOGOS_DETECTADOS = jogos;
+
+            var tbody = document.getElementById('tbody');
+            tbody.innerHTML = '';
+            jogos.forEach(function(j, i) {
+                var statusCls = j.link ? 'ok' : 'warn';
+                var statusTxt = j.link ? (j.nome && j.categoria ? 'OK' : 'Parcial') : 'Sem Link';
+                var linkCurto = j.link ? j.link.substring(0, 60) + (j.link.length > 60 ? '...' : '') : '-';
+                tbody.innerHTML +=
+                    '<tr>' +
+                        '<td style="color:var(--text-muted);">'+(i+1)+'</td>' +
+                        '<td><strong style="color:var(--text-primary);">'+escapeHtml(j.nome)+'</strong></td>' +
+                        '<td>'+escapeHtml(j.categoria)+'</td>' +
+                        '<td>v'+escapeHtml(j.versao)+'</td>' +
+                        '<td>'+escapeHtml(j.tamanho)+'</td>' +
+                        '<td style="max-width: 280px;">'+(j.link ? '<a href="'+escapeHtml(j.link)+'" target="_blank" rel="noopener" style="color:var(--accent-primary);">'+escapeHtml(linkCurto)+'</a>' : '-')+'</td>' +
+                        '<td><span class="badge '+statusCls+'">'+statusTxt+'</span></td>' +
+                    '</tr>';
+            });
+
+            document.getElementById('countTotal').textContent = jogos.length;
+            document.getElementById('previewArea').style.display = 'block';
+            document.getElementById('salvoCard').style.display = 'none';
+            statusBox('ok', '<strong>SUCESSO!</strong> Foram detectados <strong>' + jogos.length + ' jogo(s)</strong>. Verifique a tabela acima e clique em "SALVAR NO CATÁLOGO".');
+        }
+
+        function downloadJSON() {
+            if (!JOGOS_DETECTADOS.length) return;
+            var jsonStr = JSON.stringify(JOGOS_DETECTADOS, null, 2);
+            var blob = new Blob([jsonStr], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'jogos.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function salvarNoCatalogo() {
+            if (!JOGOS_DETECTADOS || !JOGOS_DETECTADOS.length) {
+                statusBox('err', 'Nenhum jogo para salvar. Clique em CONVERTER primeiro.');
+                return;
+            }
+
+            try {
+                localStorage.setItem('ps4games_admin_data', JSON.stringify(JOGOS_DETECTADOS));
+                ALL_GAMES = JOGOS_DETECTADOS;
+                saveGamesData(JOGOS_DETECTADOS, true);
+            } catch(e) {
+                // Ignora se localStorage não disponível
+            }
+
+            downloadJSON();
+
+            statusBox('ok',
+                '<strong>CATÁLOGO SALVO!</strong><br>' +
+                '<ul style="margin: 10px 0 0 20px; padding:0; line-height:1.9;">' +
+                    '<li>' + JOGOS_DETECTADOS.length + ' jogo(s) salvos no <code>localStorage</code> do seu navegador.</li>' +
+                    '<li>O arquivo <code>jogos.json</code> também foi baixado para a sua pasta Downloads.</li>' +
+                    '<li>Agora, para publicar no GitHub Pages, <strong>execute o arquivo <code>deploy-catalogo.ps1</code></strong> (dê duplo clique nele).</li>' +
+                    '<li>Esse script move automaticamente o arquivo baixado para <code>data/jogos.json</code> e faz <code>git push</code>.</li>' +
+                '</ul>'
+            );
+            document.getElementById('salvoCard').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

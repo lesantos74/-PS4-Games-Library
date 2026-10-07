@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="PS4 Games Library - Biblioteca completa de jogos, aplicações, demos e homebrew autorizados para PS4. Download rápido e seguro.">
+    <meta name="keywords" content="PS4, jogos PS4, download PS4, homebrew, aplicações PS4, biblioteca de jogos">
+    <meta name="author" content="PS4 Games Library">
+    <meta property="og:title" content="PS4 Games Library">
+    <meta property="og:description" content="Biblioteca completa de jogos e conteúdos para PS4">
+    <meta property="og:type" content="website">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PS4 Games Library - Início</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <div class="logo-icon">PS4</div>
+                    <div class="logo-text"><span>PS4</span> Games Library</div>
+                </a>
+
+                <div class="header-middle">
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" id="searchInput" data-i18n="header.busca.placeholder" placeholder="Pesquisar jogos, categorias..." autocomplete="off">
+                    </div>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                        <i class="fas fa-bolt"></i>
+                    </button>
+                </div>
+
+                <nav class="nav-menu" id="navMenu">
+                    <a href="index.html" class="nav-link active" data-i18n="nav.inicio">Início</a>
+                    <a href="index.html#catalogo" class="nav-link" data-i18n="nav.catalogo">Jogos</a>
+                    <a href="categorias.html" class="nav-link" data-i18n="nav.categorias">Categorias</a>
+                    <a href="index.html#maisbaixados" class="nav-link" data-i18n="section.maisBaixados.titulo">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link" data-i18n="section.recentes.titulo">Recentes</a>
+                    <a href="favoritos.html" class="nav-link">
+                        <i class="far fa-heart"></i> <span data-i18n="nav.favoritos">Favoritos</span>
+                    </a>
+                    <a href="admin.html" class="nav-link nav-admin-secret" title="Admin" aria-label="Admin">
+                        <i class="fas fa-cog"></i>
+                    </a>
+                    <div id="lang-selector" style="margin-left:6px;"></div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="main">
+        <div class="container">
+
+            <!-- BANNER CAROUSEL -->
+            <section class="banner-carousel" id="bannerCarousel">
+                <!-- Slides carregados via JS -->
+            </section>
+
+            <!-- DOAÇÃO / APOIE O PROJETO -->
+            <section class="section donation-section" id="doacao">
+                <div class="donation-card">
+                    <div class="donation-content">
+                        <div class="donation-header">
+                            <h2 class="donation-title"><i class="fas fa-star"></i> Ajude-nos a melhorar cada vez mais!</h2>
+                            <p class="donation-subtitle">As doações são investidas diretamente em:</p>
+                        </div>
+                        <ul class="donation-list">
+                            <li><i class="fas fa-check"></i> Melhorias no site</li>
+                            <li><i class="fas fa-check"></i> Novos recursos</li>
+                            <li><i class="fas fa-check"></i> Hospedagem e manutenção</li>
+                            <li><i class="fas fa-check"></i> Atualizações constantes</li>
+                        </ul>
+                        <p class="donation-footer-text">
+                            Escaneie o QR Code e contribua para o futuro deste projeto. Obrigado pelo seu apoio! 🎮❤️
+                        </p>
+                    </div>
+                    <div class="donation-qr-wrapper">
+                        <div class="donation-qr-card">
+                            <div class="donation-pix-badge">
+                                <i class="fas fa-star"></i> PIX
+                            </div>
+                            <img src="imagens/qrcode-pix.png" alt="QR Code PIX - Doação" class="donation-qr-img">
+                            <p class="donation-qr-caption">Aponte a câmera do celular</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CATEGORIAS FILTER -->
+            <section class="section">
+                <div class="section-header">
+                    <h2 class="section-title" data-i18n="footer.categorias.titulo">Categorias</h2>
+                    <a href="categorias.html" class="section-link" data-i18n-attr="data-i18n-section-link:header.todasCategorias.tooltip" data-i18n="section.maisBaixados.verTodos">
+                        Ver todas <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="categories-filter" id="categoriesFilter">
+                    <!-- Carregado via JS -->
+                </div>
+            </section>
+
+            <!-- MAIS BAIXADOS -->
+            <section class="section" id="maisbaixados">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-fire"></i> <span data-i18n="section.maisBaixados.titulo">Mais Baixados</span></h2>
+                    <a href="categorias.html" class="section-link" data-i18n="section.maisBaixados.verTodos">
+                        Ver todos <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="games-grid" id="topGamesGrid">
+                    <!-- Loader enquanto carrega -->
+                    <div class="loader" style="grid-column: 1/-1;"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- RECENTES -->
+            <section class="section" id="recentes">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-calendar"></i> <span data-i18n="section.recentes.titulo">Adicionados Recentemente</span></h2>
+                    <a href="categorias.html" class="section-link" data-i18n="section.recentes.verTodos">
+                        Ver todos <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="games-grid" id="recentGamesGrid">
+                    <div class="loader" style="grid-column: 1/-1;"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+            <!-- CATÁLOGO COMPLETO -->
+            <section class="section" id="catalogo">
+                <div class="section-header">
+                    <h2 class="section-title"><i class="fas fa-gamepad"></i> <span data-i18n="section.catalogo.titulo">Catálogo Completo</span></h2>
+                    <span id="catalogCount" class="section-link" style="color: var(--text-muted); cursor: default;"></span>
+                </div>
+                <div class="games-grid" id="allGamesGrid">
+                    <div class="loader" style="grid-column: 1/-1;"><div class="spinner"></div></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="logo">
+                        <div class="logo-icon">PS4</div>
+                        <div class="logo-text"><span>PS4</span> Games Library</div>
+                    </a>
+                    <p data-i18n="footer.sobre.texto">A sua biblioteca completa de jogos, aplicações, demos e homebrew autorizados para PlayStation 4. Conteúdos atualizados regularmente.</p>
+                </div>
+                <div>
+                    <h4 class="footer-col-title" data-i18n="footer.atalhos.titulo">Navegação</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html" data-i18n="nav.inicio">Início</a></li>
+                        <li><a href="categorias.html" data-i18n="nav.categorias">Categorias</a></li>
+                        <li><a href="favoritos.html" data-i18n="nav.favoritos">Favoritos</a></li>
+                        <li><a href="index.html#maisbaixados" data-i18n="section.maisBaixados.titulo">Mais Baixados</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title" data-i18n="footer.categorias.titulo">Categorias</h4>
+                    <ul class="footer-links">
+                        <li><a href="categorias.html?cat=Ação">Ação</a></li>
+                        <li><a href="categorias.html?cat=RPG">RPG</a></li>
+                        <li><a href="categorias.html?cat=Corrida">Corrida</a></li>
+                        <li><a href="categorias.html?cat=Futebol">Futebol</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-col-title" data-i18n="footer.sistema.titulo">Sistema</h4>
+                    <ul class="footer-links">
+                        <li><a href="categorias.html?cat=Homebrew">Homebrew</a></li>
+                        <li><a href="categorias.html?cat=Aplicações">Aplicações</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p data-i18n="footer.direitos">&copy; 2026 PS4 Games Library. Todos os direitos reservados. Projeto educacional.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL SCREENSHOT -->
+    <div class="modal-overlay" id="screenshotModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('screenshotModal')"><i class="fas fa-close"></i></button>
+            <div class="modal-body" id="modalScreenshotBody">
+                <img src="" alt="Screenshot">
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- SCRIPTS -->
+    <script src="js/i18n.js"></script>
+    <script src="js/favoritos.js"></script>
+    <script src="js/pesquisa.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        // Inicialização da página principal
+        document.addEventListener('DOMContentLoaded', function() {
+            applyI18n();
+            renderLangDropdown('lang-selector');
+            initApp();
+            initSearch();
+            initFavorites();
+        });
+    </script>
+</body>
+</html>
