@@ -15,72 +15,41 @@ function getDefaultGames() {
     return [];
 }
 
-const JSON_SIGNATURE_KEY = 'ps4games_json_signature';
-
-function computeTextSignature(text) {
-    let hash = 5381;
-    for (let i = 0; i < text.length; i++) {
-        hash = ((hash << 5) + hash + text.charCodeAt(i)) | 0;
-    }
-    return text.length + '-' + (hash >>> 0).toString(16);
-}
-
-function readLocalGames() {
-    try {
-        const raw = localStorage.getItem('ps4games_admin_data');
-        if (!raw) return null;
-        const data = JSON.parse(raw);
-        return (Array.isArray(data) && data.length > 0) ? data : null;
-    } catch (e) {
-        console.warn('Dados admin inválidos, ignorando localStorage');
-        return null;
-    }
-}
-
-// data/jogos.json is the source of truth. localStorage is only kept while
-// jogos.json is unchanged since the last sync (preserves local admin edits);
-// a new deploy of jogos.json replaces it for every visitor.
 function loadGamesData() {
     return new Promise(function(resolve, reject) {
-        const localGames = readLocalGames();
-        fetch('data/jogos.json?t=' + Date.now(), { cache: 'no-store' })
+        const adminData = localStorage.getItem('ps4games_admin_data');
+        if (adminData) {
+            try {
+                const data = JSON.parse(adminData);
+                if (data && Array.isArray(data) && data.length > 0) {
+                    ALL_GAMES = data;
+                    resolve(data);
+                    return;
+                }
+            } catch (e) {
+                console.warn('Dados admin inválidos, ignorando localStorage');
+            }
+        }
+        fetch('data/jogos.json?t=' + Date.now())
             .then(function(r) {
                 if (!r.ok) throw new Error('HTTP ' + r.status);
-                return r.text();
+                return r.json();
             })
-            .then(function(text) {
-                const data = JSON.parse(text);
-                if (!data || !Array.isArray(data) || data.length === 0) {
+            .then(function(data) {
+                if (data && Array.isArray(data) && data.length > 0) {
+                    ALL_GAMES = data;
+                    try {
+                        localStorage.setItem('ps4games_admin_data', JSON.stringify(data));
+                        console.log('[loadGamesData] Dados do jogos.json sincronizados automaticamente com localStorage (' + data.length + ' jogos)');
+                    } catch (e) {
+                        console.warn('[loadGamesData] Não foi possível salvar no localStorage:', e);
+                    }
+                    resolve(data);
+                } else {
                     throw new Error('JSON vazio');
                 }
-                const signature = computeTextSignature(text);
-                let storedSignature = null;
-                try { storedSignature = localStorage.getItem(JSON_SIGNATURE_KEY); } catch (e) {}
-                if (localGames && storedSignature === signature) {
-                    ALL_GAMES = localGames;
-                    resolve(localGames);
-                    return;
-                }
-                if (localGames && JSON.stringify(localGames) !== JSON.stringify(data)) {
-                    createBackup();
-                }
-                ALL_GAMES = data;
-                try {
-                    localStorage.setItem('ps4games_admin_data', JSON.stringify(data));
-                    localStorage.setItem(JSON_SIGNATURE_KEY, signature);
-                    console.log('[loadGamesData] data/jogos.json sincronizado com localStorage (' + data.length + ' jogos)');
-                } catch (e) {
-                    console.warn('[loadGamesData] Não foi possível salvar no localStorage:', e);
-                }
-                resolve(data);
             })
             .catch(function(err) {
-                if (localGames) {
-                    console.warn('[loadGamesData] data/jogos.json indisponível (' + err.message + '), usando localStorage');
-                    ALL_GAMES = localGames;
-                    resolve(localGames);
-                    return;
-                }
                 const fallback = getDefaultGames();
                 ALL_GAMES = fallback;
                 if (fallback.length === 0) {
@@ -916,7 +885,7 @@ function showArchiveModal(gameId) {
         });
     }
 
-    document.getElementById('archiveModalBody').innerHTML = buildArchiveWarningHTML(game, false);
+    document.getElementById('archiveModalBody').innerHTML = buildArchiveWarningHTML(game, false) + '<br>' + buildDisclaimerHTML();
     const dlLink = document.getElementById('archiveModalDownload');
     if (dlLink) {
         dlLink.href = game.link || '#';
@@ -1129,4 +1098,27 @@ function escapeHtml(str) {
     const div = document.createElement('div');
     div.textContent = str;
     return div.innerHTML;
+}
+
+/* =========================================================
+   AVISO LEGAL DE DOWNLOAD
+   Informa aos usuários sobre a natureza dos links.
+   ========================================================= */
+function buildDisclaimerHTML() {
+    return (
+        '<div class="download-disclaimer" role="note" aria-label="Aviso legal de download">' +
+            '<div class="download-disclaimer-icon">' +
+                '<i class="fas fa-scale-balanced"></i>' +
+            '</div>' +
+            '<div class="download-disclaimer-content">' +
+                '<h4 class="download-disclaimer-title">Aviso Legal</h4>' +
+                '<p class="download-disclaimer-text">' +
+                    'Os links de download disponibilizados nesta página são <strong>encontrados livremente na internet</strong>. ' +
+                    'Este site <strong>não hospeda nenhum arquivo</strong> em seus servidores — apenas indexa e compartilha endereços públicos. ' +
+                    'Todo o conteúdo aqui apresentado tem como único propósito <strong>fins educacionais e de estudo</strong>. ' +
+                    'Lembre-se: a <strong>pirataria é crime</strong>. Se gostar de um jogo, considere adquiri-lo oficialmente para apoiar os desenvolvedores.' +
+                '</p>' +
+            '</div>' +
+        '</div>'
+    );
 }
