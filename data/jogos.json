@@ -836,7 +836,7 @@
     "tamanho": "43.13 GB",
     "dataPublicacao": "2026-10-09",
     "downloads": 0,
-    "imagem": "https://images.pushsquare.com/733795f463582/pinball-fx-cover.cover_large.jpg",
+    "imagem": "https://stratege.ru/sites/default/files/games/boxart/img/6bbdb4f915f4be4839ce0b0815894998.png",
     "banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaW0UqHsT-IVLyVx76WMBq_hxZke2mKTx6NfNUQpqpRd5mXrh2UMI0EHc&s=10",
     "link": "magnet:?xt=urn:btih:E83C6DD63754C0AF9C37FDC6D8D5C709ACB3BA4F&dn=Pinball%20FX&tr=http%3a%2f%2fbt.t-ru.org%2fann%3fpk%3de325e7a94cd8e7a73e5696b21b6c448a&tr=http%3a%2f%2fretracker.local%2fannounce",
     "servidor": "Servidor 1",
@@ -911,5 +911,48 @@
     ],
     "requisitos": {},
     "id": 41
+  },
+  {
+    "nome": "The Dark Pictures Anthology - Little Hope",
+    "categoria": "Aventura",
+    "versao": "1.0",
+    "tamanho": "32.5 GB",
+    "dataPublicacao": "2026-10-09",
+    "downloads": 0,
+    "imagem": "https://auctor.tv/wp-content/uploads/2021/03/748848_front.jpg",
+    "banner": "https://p325k7wa.twic.pics/high/the-dark-pictures/little-hope/04-news/little_hope_thumbnail_new.jpg?twic=v1/cover=750x422/step=10/quality=80",
+    "link": "magnet:?xt=urn:btih:9F219A4F7E4E66FCE05ABCA6EF5D852B64BFF668&dn=The+Dark+Pictures+Anthology+-+Little+Hope+%28A0101-V0100%29+%28CUSA18028%29+PS4+PKG+%5BAUCTOR.TV%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2740%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2910%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fopentracker.i2p.rocks%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.zer0day.to%3A1337%2Fannounce",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "The Dark Pictures Anthology é uma série de jogos de terror cinematográficos com histórias independentes e interativas para um ou mais jogadores.\n\nQuatro estudantes e um professor ficam presos na cidade abandonada de Little Hope. Encurralados por um nevoeiro impenetrável, eles tentam fugir desesperadamente enquanto têm visões horripilantes do passado. Eles precisam descobrir o que move essas aparições antes que as forças malignas em ação levem suas almas para o inferno.\n\nTestemunhe visões assustadoras do passado, atormentadas pelos Julgamentos das Bruxas de Andover do século XVII.\n\nEscape das aparições medonhas que os perseguem pelo nevoeiro!",
+    "screenshots": [
+      "https://i.ytimg.com/vi/XTV6xbsOQPA/maxresdefault.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrknb8wuJo9Pc1udi7NVF6zxDNEbMsGzh0p2tE1SAf-iZ4pHg3vLeojw02&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXD3QIvE6gTGsSSAojUwiy5VmyqWy7ycTmD01g-nGpKy0x0BDDwmrtp1WO&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrqRbeKwpNRXGuAouZrhSnFzI7lgs-Mq1plAro7x6ghU0HoQiUjbpQ2jPR&s=10"
+    ],
+    "requisitos": {},
+    "id": 42
+  },
+  {
+    "nome": "Shadow of the Tomb Raider",
+    "categoria": "Aventura",
+    "versao": "1",
+    "tamanho": "26.8 GB",
+    "dataPublicacao": "2026-10-09",
+    "downloads": 0,
+    "imagem": "https://cdn.awsli.com.br/2500x2500/53/53761/produto/30210013/7d72fbcfe5.jpg",
+    "banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSurP6dM6pAqQs8yvROjKQf7_kEHSrCTq_0Lj-udgV6_6HV1TEOCXoIGU8&s=10",
+    "link": "magnet:?xt=urn:btih:02E85088F81CB73AC82FAA0FAAC773C4A6FBECCA&dn=Shadow+of+the+Tomb+Raider+%28A0100-V0100%29+%28CUSA10872%29+PS4+PKG+%5BAUCTOR.TV%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2960%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2750%2Fannounce&tr=http%3A%2F%2Ftracker.auctor.tv%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fopentracker.i2p.rocks%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.zer0day.to%3A1337%2Fannounce",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "",
+    "screenshots": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR3SypU-MGHxPK6ftIg4zbUF4ynJg8VkjgXocA9e8qsQSPnS5C-9jZjz4&s=10",
+      "https://media.gq.com/photos/5b9bd4e823d1547feadd5a7b/16:9/w_2560%2Cc_limit/33010ec23c4d5b9c79eeaade1ac901fb.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDgTc8vVXJ27jErp-_lOwREYE-SrFHZ_HisVLNhONJ5bHgEszSXc9DnXE&s=10"
+    ],
+    "requisitos": {},
+    "id": 43
   }
 ]
