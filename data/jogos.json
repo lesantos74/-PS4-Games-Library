@@ -784,5 +784,27 @@
     ],
     "requisitos": {},
     "id": 35
+  },
+  {
+    "nome": "Horizon Zero Dawn - Complete Edition",
+    "categoria": "RPG",
+    "versao": "1",
+    "tamanho": "43.6 GB",
+    "dataPublicacao": "2026-10-09",
+    "downloads": 0,
+    "imagem": "https://auctor.tv/wp-content/uploads/2020/08/650891_front.jpg",
+    "banner": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG5HI4K4plCmboTurxFOjsNuP_Dkk6Qg1DtGt2qB74ULLtCYkuhz4elu4&s=10",
+    "link": "magnet:?xt=urn:btih:5BD8A9FA3BE8AA183BCCCC8371D9C14909C96097&dn=Horizon+Zero+Dawn+-+Complete+Edition+%28A0152-V0101%29+%28CUSA10213%29+PS4+PKG+%5BAUCTOR.TV%5D&tr=http%3A%2F%2Ftracker.auctor.tv%2Fannounce.php&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fopentracker.i2p.rocks%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.zer0day.to%3A1337%2Fannounce",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "Fica a conhecer a lendária aventura da Aloy, na qual irá desvendar os mistérios de uma Terra futura dominada por máquinas. Usa ataques devastadores e mostra a tua astúcia, à medida que exploras um majestoso mundo aberto neste premiado RPG de ação!",
+    "screenshots": [
+      "https://cdn2.unrealengine.com/egs-horizonzerodawncompleteedition-guerrilla-g1a-00-1920x1080-371956372.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTM3fZNOPvEfvY0e6zURLyvZgjebT9hCWUe-lFvDXTKzYSTz1frPkTNX6Q&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRUecmAuxxC334xzS88S4j4g4HtXW5rDnSep3aJvdEvxGzTXIRgdO4k7L8&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoqsUWlQPuKbgN3-fRCBITw2svqta2KMAR8M4IjVyjUHk26FC7ySnQHbZe&s=10"
+    ],
+    "requisitos": {},
+    "id": 36
   }
 ]
