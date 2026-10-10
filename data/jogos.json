@@ -971,5 +971,27 @@
     "screenshots": [],
     "requisitos": {},
     "id": 44
+  },
+  {
+    "nome": "Need for Speed - Hot Pursuit Remastered",
+    "categoria": "Corrida",
+    "versao": "1",
+    "tamanho": "21.4 GB",
+    "dataPublicacao": "2026-10-10",
+    "downloads": 0,
+    "imagem": "https://auctor.tv/wp-content/uploads/2021/03/770477_front.jpg",
+    "banner": "https://image.api.playstation.com/vulcan/ap/rnd/202210/3122/lE7RoDAH8Utq30mBwvYkrD7Y.jpg",
+    "link": "magnet:?xt=urn:btih:2424733FA5AC854AF35B524046372379F0F69863&dn=Need+for+Speed+-+Hot+Pursuit+Remastered+%28A0100-V0100%29+%28CUSA23265%29+PS4+PKG+%5BAUCTOR.TV%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2880%2Fannounce&tr=udp%3A%2F%2F9.rarbg.to%3A2770%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=http%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fopentracker.i2p.rocks%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.internetwarriors.net%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.leechers-paradise.org%3A6969%2Fannounce&tr=udp%3A%2F%2Fcoppersurfer.tk%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.zer0day.to%3A1337%2Fannounce",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "Sinta a emoção da perseguição e a adrenalina da fuga em Need for Speed™ Hot Pursuit Remastered no PlayStation®4. Sinta a sensação extrema de velocidade, tanto como fora da lei quanto como policial, nos carros mais potentes do mundo. Supere a perseguição ou enfrente infratores com o armamento tático à sua disposição em uma experiência competitiva de corrida cheia de energia. Atualizado com visuais aprimorados, multijogador crossplay (incluindo a competição assíncrona fornecida por AutoLog), além de todo o conteúdo adicional dos DLCs: essa é a edição definitiva da aclamada estreia da Criterion Games em Need for Speed. É hora de reacender a perseguição.",
+    "screenshots": [
+      "https://image.api.playstation.com/vulcan/img/rnd/202010/0918/spcKf4G9oQahFASusnnTnPkE.jpg",
+      "https://i.ytimg.com/vi/YKtssxvSpxQ/maxresdefault.jpg",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwOoyyzeF-fDy1-S38fBNZKa340TNrsSA9njBguW3MG0NF2wSx6Z3s5o1c&s=10",
+      "https://i.ytimg.com/vi/zUgDT1Ywdfo/maxresdefault.jpg"
+    ],
+    "requisitos": {},
+    "id": 45
   }
 ]
