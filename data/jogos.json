@@ -1081,5 +1081,71 @@
     ],
     "requisitos": {},
     "id": 49
+  },
+  {
+    "nome": "Gran Turismo Sport",
+    "categoria": "Corrida",
+    "versao": "1",
+    "tamanho": "59.84 GB",
+    "dataPublicacao": "2026-10-11",
+    "downloads": 0,
+    "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSSufXt75DET5GmSKVK8ENRMsOYSgKnzru3RTk4F1xyXBzN1Wzs7WYoAiQ&s=10",
+    "banner": "https://www.gran-turismo.com/images/c/i1mHNtKQouAxkSH.jpg",
+    "link": "magnet:?xt=urn:btih:50cfedfea6bedcd5320d042a04e708f21e6a5364",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "O Gran Turismo Sport (lançado em outubro de 2017 para PlayStation 4) é um simulador de corrida focado no esporte a motor competitivo e na cultura automobilística, diferindo dos jogos tradicionais da franquia que tinham uma campanha longa de coleção de carros.",
+    "screenshots": [
+      "https://cdn.motor1.com/images/mgl/Kb8XWA/s1/my-first-gran-turismo.jpg",
+      "https://criticalhits.com.br/wp-content/uploads/2025/04/Gran-Turismo-4-02.jpg",
+      "https://cdn.dlcompare.com/game_tetiere/upload/gameimage/file/20551.jpeg.webp",
+      "https://s2-techtudo.glbimg.com/qz7Xty88zDOPz4-jfGUDaiJ666M=/0x0:695x391/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_08fbf48bc0524877943fe86e43087e7a/internal_photos/bs/2017/B/m/tTysDLSomEJOeN3zeLsw/gran-turismo-r-sport-20171022202711.jpg"
+    ],
+    "requisitos": {},
+    "id": 50
+  },
+  {
+    "nome": "Pro Evolution Soccer 2017",
+    "categoria": "Futebol",
+    "versao": "1",
+    "tamanho": "17.2 GB",
+    "dataPublicacao": "2026-10-11",
+    "downloads": 0,
+    "imagem": "https://m.media-amazon.com/images/I/91rFsSbCK+L.jpg",
+    "banner": "https://i.ytimg.com/vi/EEt9-680Db0/maxresdefault.jpg",
+    "link": "magnet:?xt=urn:btih:e52267081210097d5de516f424e48e47f16da8cc&dn=EP0101-CUSA04957_00-PES2017000000000-A0100-V0100.pkg&tr=retracker.local/announce",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "Pro Evolution Soccer 2017 representa o retorno da premiada franquia, aprimorada com uma série de novos atributos e melhorias de qualidade. PES 2017 busca manter o título de ‘Melhor Jogo de Esportes’ pelo terceiro ano consecutivo, conforme votos recebidos ao redor do mundo em exposições de games e por grandes veículos de mídia em 2014 e 2015.\nO slogan desse ano, ‘Control Reality’ (controle a realidade), resume o foco de PES 2017, levando sua jogabilidade marcante para um novo nível de realidade interativa, tanto no controle como em seu novo padrão de elementos visuais autênticos. A imersão na apresentação do jogo e seus elementos interativos e táticos melhoram a experiência para o jogador, já que o título busca maximizar a diversão no enfrentamento de qualquer jogador em todos os modos. O motor gráfico Fox Engine novamente fortalece a série ao elevá-la a novos patamares dentre diversas melhorias, e com PES 2017 os usuários poderão viver a experiência do futebol real pela primeira vez em um videogame.",
+    "screenshots": [
+      "https://images.cgames.de/images/gsgp/4/pro-evolution-soccer-2017_2764685.jpg",
+      "https://oyster.ignimgs.com/mediawiki/apis.ign.com/pro-evolution-soccer-2017/3/39/Pro-evo-2017-02jpg-7cf05c.jpg",
+      "https://tse2.mm.bing.net/th/id/OIP.VzuL2T2vA5PVRwBixqZlOQHaEK?r=0&pid=Api&h=220&P=0",
+      "https://i.ytimg.com/vi/L-O-Fj2GcrM/maxresdefault.jpg"
+    ],
+    "requisitos": {},
+    "id": 51
+  },
+  {
+    "nome": "The Order: 1886",
+    "categoria": "Ação",
+    "versao": "1",
+    "tamanho": "32.3 GB",
+    "dataPublicacao": "2026-10-11",
+    "downloads": 0,
+    "imagem": "https://www.lukiegames.com/assets/images/PS4/ps4_order_1886_p_0c25n5.jpg",
+    "banner": "https://i.ytimg.com/vi/YirG3AONAnw/maxresdefault.jpg",
+    "link": "magnet:?xt=urn:btih:c6dd03066194000eebc13b8c0a1e639e0aa8c542&dn=The+Order+1886+%28CUSA00076%29&tr=retracker.local/announce",
+    "servidor": "Servidor 1",
+    "trailer": "",
+    "sinopse": "Descubra os segredos mais sombrios da história The Order: 1886™ apresenta aos jogadores uma visão única de Londres no período vitoriano, em que o homem usa tecnologia avançada para lutar contra um antigo e poderoso inimigo. Como membro de uma ordem de cavaleiros de elite, participe de uma guerra secular que\nirá determinar para sempre os rumos da história.",
+    "screenshots": [
+      "https://tse1.mm.bing.net/th/id/OIP.oNjWPuBtuL3_2Z8YswW1-QHaEK?r=0&pid=Api&h=220&P=0",
+      "https://tse3.mm.bing.net/th/id/OIP.b3QZS7IHTEwgi4sIkasdHwHaDh?r=0&pid=Api&h=220&P=0",
+      "https://images.gamersyde.com/image_the_order_1886-25925-2752_0001.jpg",
+      "https://static.tweaktown.com/news/1/0/105497_1_the-order-1886-was-originally-supposed-to-be-trilogy-with-added-multiplayer.png"
+    ],
+    "requisitos": {},
+    "id": 52
   }
 ]
