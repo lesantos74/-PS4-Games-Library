@@ -36,10 +36,10 @@
 
                 <nav class="nav-menu" id="navMenu">
                     <a href="index.html" class="nav-link active" data-i18n="nav.inicio">Início</a>
-                    <a href="index.html#catalogo" class="nav-link" data-i18n="nav.catalogo">Jogos</a>
+                    <a href="index.html#catalogo" class="nav-link" data-i18n="nav.jogos">Jogos</a>
                     <a href="categorias.html" class="nav-link" data-i18n="nav.categorias">Categorias</a>
-                    <a href="index.html#maisbaixados" class="nav-link" data-i18n="section.maisBaixados.titulo">Mais Baixados</a>
-                    <a href="index.html#recentes" class="nav-link" data-i18n="section.recentes.titulo">Recentes</a>
+                    <a href="index.html#maisbaixados" class="nav-link" data-i18n="nav.maisBaixados">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link" data-i18n="nav.recentes">Recentes</a>
                     <a href="favoritos.html" class="nav-link">
                         <i class="far fa-heart"></i> <span data-i18n="nav.favoritos">Favoritos</span>
                     </a>
@@ -66,26 +66,33 @@
                 <div class="donation-card">
                     <div class="donation-content">
                         <div class="donation-header">
-                            <h2 class="donation-title"><i class="fas fa-star"></i> Ajude-nos a melhorar cada vez mais!</h2>
-                            <p class="donation-subtitle">As doações são investidas diretamente em:</p>
+                            <h2 class="donation-title"><i class="fas fa-star"></i> <span data-i18n="donate.titulo">Ajude-nos a melhorar cada vez mais!</span></h2>
+                            <p class="donation-subtitle" data-i18n="donate.subtitulo">As doações são investidas diretamente em:</p>
                         </div>
                         <ul class="donation-list">
-                            <li><i class="fas fa-check"></i> Melhorias no site</li>
-                            <li><i class="fas fa-check"></i> Novos recursos</li>
-                            <li><i class="fas fa-check"></i> Hospedagem e manutenção</li>
-                            <li><i class="fas fa-check"></i> Atualizações constantes</li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="donate.item.melhorias">Melhorias no site</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="donate.item.recursos">Novos recursos</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="donate.item.hospedagem">Hospedagem e manutenção</span></li>
+                            <li><i class="fas fa-check"></i> <span data-i18n="donate.item.atualizacoes">Atualizações constantes</span></li>
                         </ul>
-                        <p class="donation-footer-text">
+                        <p class="donation-footer-text" data-i18n="donate.footerTexto">
                             Escaneie o QR Code e contribua para o futuro deste projeto. Obrigado pelo seu apoio! 🎮❤️
                         </p>
                     </div>
                     <div class="donation-qr-wrapper">
                         <div class="donation-qr-card">
                             <div class="donation-pix-badge">
-                                <i class="fas fa-star"></i> PIX
+                                <i class="fas fa-star"></i> <span data-i18n="donate.pix.badge">PIX</span>
                             </div>
-                            <img src="imagens/qrcode-pix.png" alt="QR Code PIX - Doação" class="donation-qr-img">
-                            <p class="donation-qr-caption">Aponte a câmera do celular</p>
+                            <img src="imagens/qrcode-pix.png" alt="QR Code PIX - Doação" class="donation-qr-img" data-i18n-attr="alt:donate.pix.badge">
+                            <p class="donation-qr-caption" data-i18n="donate.pix.caption">Aponte a câmera do celular</p>
+                        </div>
+                        <div class="donation-qr-card">
+                            <div class="donation-paypal-badge">
+                                <span data-i18n="donate.paypal.badge">PayPal</span>
+                            </div>
+                            <img src="imagens/QR Code.png" alt="QR Code PayPal - Doação" class="donation-qr-img" data-i18n-attr="alt:donate.paypal.badge">
+                            <p class="donation-qr-caption" data-i18n="donate.paypal.caption">Escaneie para doar via PayPal</p>
                         </div>
                     </div>
                 </div>
@@ -94,9 +101,9 @@
             <!-- CATEGORIAS FILTER -->
             <section class="section">
                 <div class="section-header">
-                    <h2 class="section-title" data-i18n="footer.categorias.titulo">Categorias</h2>
-                    <a href="categorias.html" class="section-link" data-i18n-attr="data-i18n-section-link:header.todasCategorias.tooltip" data-i18n="section.maisBaixados.verTodos">
-                        Ver todas <i class="fas fa-arrow-right"></i>
+                    <h2 class="section-title" data-i18n="section.categorias.titulo">Categorias</h2>
+                    <a href="categorias.html" class="section-link">
+                        <span data-i18n="section.categorias.verTodas">Ver todas</span> <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 <div class="categories-filter" id="categoriesFilter">
@@ -108,8 +115,8 @@
             <section class="section" id="maisbaixados">
                 <div class="section-header">
                     <h2 class="section-title"><i class="fas fa-fire"></i> <span data-i18n="section.maisBaixados.titulo">Mais Baixados</span></h2>
-                    <a href="categorias.html" class="section-link" data-i18n="section.maisBaixados.verTodos">
-                        Ver todos <i class="fas fa-arrow-right"></i>
+                    <a href="categorias.html" class="section-link">
+                        <span data-i18n="section.maisBaixados.verTodos">Ver todos</span> <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 <div class="games-grid" id="topGamesGrid">
@@ -122,8 +129,8 @@
             <section class="section" id="recentes">
                 <div class="section-header">
                     <h2 class="section-title"><i class="fas fa-calendar"></i> <span data-i18n="section.recentes.titulo">Adicionados Recentemente</span></h2>
-                    <a href="categorias.html" class="section-link" data-i18n="section.recentes.verTodos">
-                        Ver todos <i class="fas fa-arrow-right"></i>
+                    <a href="categorias.html" class="section-link">
+                        <span data-i18n="section.recentes.verTodos">Ver todos</span> <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
                 <div class="games-grid" id="recentGamesGrid">
@@ -162,7 +169,7 @@
                         <li><a href="index.html" data-i18n="nav.inicio">Início</a></li>
                         <li><a href="categorias.html" data-i18n="nav.categorias">Categorias</a></li>
                         <li><a href="favoritos.html" data-i18n="nav.favoritos">Favoritos</a></li>
-                        <li><a href="index.html#maisbaixados" data-i18n="section.maisBaixados.titulo">Mais Baixados</a></li>
+                        <li><a href="index.html#maisbaixados" data-i18n="nav.maisBaixados">Mais Baixados</a></li>
                     </ul>
                 </div>
                 <div>

@@ -20,22 +20,23 @@
                 <div class="header-middle">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="Pesquisar jogos..." autocomplete="off">
+                        <input type="text" id="searchInput" data-i18n="header.busca.placeholder" placeholder="Pesquisar jogos..." autocomplete="off">
                     </div>
                     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
                         <i class="fas fa-bolt"></i>
                     </button>
                 </div>
                 <nav class="nav-menu" id="navMenu">
-                    <a href="index.html" class="nav-link">Início</a>
-                    <a href="index.html#catalogo" class="nav-link">Jogos</a>
-                    <a href="categorias.html" class="nav-link active">Categorias</a>
-                    <a href="index.html#maisbaixados" class="nav-link">Mais Baixados</a>
-                    <a href="index.html#recentes" class="nav-link">Recentes</a>
-                    <a href="favoritos.html" class="nav-link">Favoritos</a>
+                    <a href="index.html" class="nav-link" data-i18n="nav.inicio">Início</a>
+                    <a href="index.html#catalogo" class="nav-link" data-i18n="nav.jogos">Jogos</a>
+                    <a href="categorias.html" class="nav-link active" data-i18n="nav.categorias">Categorias</a>
+                    <a href="index.html#maisbaixados" class="nav-link" data-i18n="nav.maisBaixados">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link" data-i18n="nav.recentes">Recentes</a>
+                    <a href="favoritos.html" class="nav-link" data-i18n="nav.favoritos">Favoritos</a>
                     <a href="admin.html" class="nav-link nav-admin-secret" title="Admin" aria-label="Admin">
                         <i class="fas fa-cog"></i>
                     </a>
+                    <div id="lang-selector" style="margin-left:6px;"></div>
                 </nav>
             </div>
         </div>
@@ -45,8 +46,8 @@
         <div class="container">
 
             <div class="page-header">
-                <h1 class="page-title"><i class="fas fa-folder"></i> Categorias</h1>
-                <p class="page-subtitle">Explore a nossa biblioteca organizada por categorias. Encontre o tipo de conteúdo perfeito para si.</p>
+                <h1 class="page-title"><i class="fas fa-folder"></i> <span data-i18n="categorias.titulo">Categorias</span></h1>
+                <p class="page-subtitle" data-i18n="categorias.subtitulo">Explore a nossa biblioteca organizada por categorias. Encontre o tipo de conteúdo perfeito para si.</p>
             </div>
 
             <section class="section">
@@ -59,7 +60,7 @@
                 <div class="section-header">
                     <h2 class="section-title" id="sectionCategoriaTitle">Jogos</h2>
                     <button class="category-chip" onclick="clearCategoryFilter()" style="border-radius: 30px;">
-                        <i class="fas fa-close"></i> Limpar filtro
+                        <i class="fas fa-close"></i> <span data-i18n="categorias.limparFiltro">Limpar filtro</span>
                     </button>
                 </div>
                 <div class="categories-filter" id="categoriesFilter"></div>
@@ -79,18 +80,18 @@
                         <div class="logo-icon">PS4</div>
                         <div class="logo-text"><span>PS4</span> Games Library</div>
                     </a>
-                    <p>Biblioteca completa de jogos e conteúdos para PlayStation 4.</p>
+                    <p data-i18n="footer.brand.texto">Biblioteca completa de jogos e conteúdos para PlayStation 4.</p>
                 </div>
                 <div>
-                    <h4 class="footer-col-title">Navegação</h4>
+                    <h4 class="footer-col-title" data-i18n="footer.atalhos.titulo">Navegação</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="categorias.html">Categorias</a></li>
-                        <li><a href="favoritos.html">Favoritos</a></li>
+                        <li><a href="index.html" data-i18n="nav.inicio">Início</a></li>
+                        <li><a href="categorias.html" data-i18n="nav.categorias">Categorias</a></li>
+                        <li><a href="favoritos.html" data-i18n="nav.favoritos">Favoritos</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="footer-col-title">Top Categorias</h4>
+                    <h4 class="footer-col-title" data-i18n="footer.topCategorias.titulo">Top Categorias</h4>
                     <ul class="footer-links">
                         <li><a href="categorias.html?cat=Ação">Ação</a></li>
                         <li><a href="categorias.html?cat=RPG">RPG</a></li>
@@ -100,7 +101,7 @@
 
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
+                <p data-i18n="footer.direitos">&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -146,11 +147,12 @@
                 const count = getCategoryCount(games, cat);
                 const active = CATEGORIA_ATIVA === cat;
                 const icon = CATEGORY_ICONS[cat] || 'folder';
+                const label = (cat === 'Todos') ? t('game.todos') : cat;
                 html +=
                     '<div class="category-card ' + (active ? 'active' : '') + '" onclick="selectCategoryPage(\'' + cat + '\')">' +
                         '<div class="category-card-icon"><i class="fas fa-' + icon + '"></i></div>' +
-                        '<div class="category-card-name">' + cat + '</div>' +
-                        '<div class="category-card-count">' + count + ' ' + (count === 1 ? 'item' : 'itens') + '</div>' +
+                        '<div class="category-card-name">' + label + '</div>' +
+                        '<div class="category-card-count">' + count + ' ' + (count === 1 ? t('game.item') : t('game.itens')) + '</div>' +
                     '</div>';
             });
             container.innerHTML = html;
@@ -163,7 +165,7 @@
             const sec = document.getElementById('categoriaSelecionadaSec');
             const title = document.getElementById('sectionCategoriaTitle');
             if (sec) sec.style.display = 'block';
-            if (title) title.textContent = 'Categoria: ' + cat;
+            if (title) title.textContent = t('categorias.selecionada') + ' ' + ((cat === 'Todos') ? t('game.todos') : cat);
 
             // Atualizar categoria chips
             CURRENT_CATEGORY = cat;
@@ -198,9 +200,23 @@
             filterAndRenderCategory();
         };
 
+        // Re-renderiza ao trocar de idioma
+        window.updateDynamicTitles = function() {
+            const games = getAllGames() || [];
+            if (!games.length) return;
+            renderCategoriesCards(games);
+            const title = document.getElementById('sectionCategoriaTitle');
+            if (title && CATEGORIA_ATIVA) {
+                title.textContent = t('categorias.selecionada') + ' ' + ((CATEGORIA_ATIVA === 'Todos') ? t('game.todos') : CATEGORIA_ATIVA);
+            }
+            renderCategoriesFilter();
+            filterAndRenderCategory();
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             headerScrollEffect();
             mobileMenuToggle();
+            renderLangDropdown('lang-selector');
             const overlay = document.getElementById('screenshotModal');
             if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal('screenshotModal'); });
 

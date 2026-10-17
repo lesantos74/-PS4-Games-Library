@@ -291,39 +291,39 @@ function renderSmartTrailer(game) {
     });
 
     const caption = game.categoria
-        ? ('Galeria de imagens • ' + game.categoria + ' • ' + formatDownloads(game.downloads) + ' downloads')
-        : ('Galeria de imagens • ' + formatDownloads(game.downloads) + ' downloads');
+        ? (t('trailer.galeria') + ' • ' + game.categoria + ' • ' + formatDownloads(game.downloads) + ' ' + t('trailer.downloads'))
+        : (t('trailer.galeria') + ' • ' + formatDownloads(game.downloads) + ' ' + t('trailer.downloads'));
 
     let extraActionsHTML = '';
     if (trailerUrl) {
         if (isYouTube) {
             extraActionsHTML +=
                 '<a class="btn btn-secondary btn-sm" href="' + ytWatchUrl + '" target="_blank" rel="noopener noreferrer">' +
-                    '<i class="fas fa-video"></i> Abrir no YouTube' +
+                    '<i class="fas fa-video"></i> ' + t('trailer.abrirYouTube') +
                 '</a>' +
                 '<a class="btn btn-secondary btn-sm" href="' + ytSearchUrl + '" target="_blank" rel="noopener noreferrer">' +
-                    '<i class="fas fa-search"></i> Procurar Trailer' +
+                    '<i class="fas fa-search"></i> ' + t('trailer.procurarTrailer') +
                 '</a>';
         } else if (isVideoFile) {
             extraActionsHTML +=
                 '<a class="btn btn-secondary btn-sm" href="' + trailerUrl + '" target="_blank" rel="noopener noreferrer">' +
-                    '<i class="fas fa-download"></i> Baixar Vídeo' +
+                    '<i class="fas fa-download"></i> ' + t('trailer.downloadVideo') +
                 '</a>';
         } else {
             extraActionsHTML +=
                 '<a class="btn btn-secondary btn-sm" href="' + trailerUrl + '" target="_blank" rel="noopener noreferrer">' +
-                    '<i class="fas fa-arrow-right"></i> Abrir Trailer' +
+                    '<i class="fas fa-arrow-right"></i> ' + t('trailer.abrirTrailer') +
                 '</a>';
         }
     }
 
     const warningBadge = trailerUrl && isYouTube
-        ? '<div class="ps-warning-badge"><i class="fas fa-exclamation"></i> YouTube bloqueado? Use botões abaixo</div>'
+        ? '<div class="ps-warning-badge"><i class="fas fa-exclamation"></i> ' + t('trailer.youtubeBloqueado') + '</div>'
         : '';
 
     return (
         '<section class="details-section">' +
-            '<h2 class="details-section-title"><i class="fas fa-image"></i> Preview &amp; Trailer</h2>' +
+            '<h2 class="details-section-title"><i class="fas fa-image"></i> ' + t('trailer.titulo') + '</h2>' +
             '<div class="preview-slideshow" id="' + ssId + '" data-current="0" data-playing="1" data-total="' + screenshots.length + '">' +
                 slidesHTML +
                 '<div class="ps-dots">' + dotsHTML + '</div>' +
@@ -334,15 +334,15 @@ function renderSmartTrailer(game) {
                         '<div class="ps-game-caption">' + caption + '</div>' +
                     '</div>' +
                     '<div class="ps-controls">' +
-                        '<button class="ps-btn" title="Anterior" onclick="prevSlideshow(\'' + ssId + '\')"><i class="fas fa-chevron-left"></i></button>' +
-                        '<button class="ps-btn play" id="' + ssId + '_playbtn" title="Pausar" onclick="toggleSlideshow(\'' + ssId + '\')"><span id="' + ssId + '_playicon">⏸</span></button>' +
-                        '<button class="ps-btn" title="Seguinte" onclick="nextSlideshow(\'' + ssId + '\')"><i class="fas fa-chevron-right"></i></button>' +
+                        '<button class="ps-btn" title="' + t('trailer.anterior') + '" onclick="prevSlideshow(\'' + ssId + '\')"><i class="fas fa-chevron-left"></i></button>' +
+                        '<button class="ps-btn play" id="' + ssId + '_playbtn" title="' + t('trailer.pausar') + '" onclick="toggleSlideshow(\'' + ssId + '\')"><span id="' + ssId + '_playicon">⏸</span></button>' +
+                        '<button class="ps-btn" title="' + t('trailer.seguinte') + '" onclick="nextSlideshow(\'' + ssId + '\')"><i class="fas fa-chevron-right"></i></button>' +
                     '</div>' +
                 '</div>' +
             '</div>' +
             '<div class="trailer-actions">' +
                 '<button class="btn btn-primary btn-sm" onclick="openFirstScreenshotModal(\'' + encodeURIComponent(screenshots[0] || '') + '\')">' +
-                    '<i class="fas fa-image"></i> Ver em Tela Cheia' +
+                    '<i class="fas fa-image"></i> ' + t('trailer.verTelaCheia') +
                 '</button>' +
                 extraActionsHTML +
             '</div>' +
@@ -442,7 +442,7 @@ function loadYouTubeIframeById(wrapperId, overlayId) {
     iframe.style.height = '100%';
     iframe.style.border = 'none';
     iframe.onerror = function() {
-        try { showToast('YouTube bloqueado nesta rede. Use os botões para abrir externamente.', 'warning'); } catch(e) {}
+        try { showToast(t('msg.youtubeBloqueado'), 'warning'); } catch(e) {}
     };
     wrapper.appendChild(iframe);
 }
@@ -461,29 +461,29 @@ function createGameCard(game, options) {
     };
     card.innerHTML =
         '<div class="game-card-image">' +
-            '<img src="' + (game.imagem || '') + '" alt="' + (game.nome || 'Jogo') + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x420/1a1a1a/0055FF?text=Imagem\'">' +
+            '<img src="' + (game.imagem || '') + '" alt="' + (game.nome || t('game.semNome')) + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x420/1a1a1a/0055FF?text=Imagem\'">' +
             '<span class="game-card-badge">v' + (game.versao || '1.0') + '</span>' +
-            '<span class="game-card-category">' + (game.categoria || 'Geral') + '</span>' +
+            '<span class="game-card-category">' + (game.categoria || t('game.geral')) + '</span>' +
             archiveTag +
             '<button class="favorite-btn ' + (isFav ? 'active' : '') + '" data-fav-id="' + game.id + '" onclick="return toggleFavorite(' + game.id + ', event)">' +
                 '<i class="fas ' + (isFav ? 'heart' : 'heart-outline') + '"></i>' +
             '</button>' +
         '</div>' +
         '<div class="game-card-body">' +
-            '<h3 class="game-card-title">' + (game.nome || 'Sem nome') + '</h3>' +
+            '<h3 class="game-card-title">' + (game.nome || t('game.semNome')) + '</h3>' +
             '<div class="game-card-meta">' +
                 '<div class="meta-item">' +
-                    '<span class="meta-label">Tamanho</span>' +
+                    '<span class="meta-label">' + t('game.meta.tamanho') + '</span>' +
                     '<span class="meta-value">' + (game.tamanho || '-') + '</span>' +
                 '</div>' +
                 '<div class="meta-item">' +
-                    '<span class="meta-label">Data</span>' +
+                    '<span class="meta-label">' + t('game.meta.data') + '</span>' +
                     '<span class="meta-value">' + formatDate(game.dataPublicacao) + '</span>' +
                 '</div>' +
             '</div>' +
             '<div class="game-card-footer">' +
                 '<span class="game-card-downloads"><i class="fas fa-download"></i> ' + formatDownloads(game.downloads) + '</span>' +
-                '<a class="game-card-btn" onclick="event.stopPropagation(); window.location.href=\'detalhes.html?id=' + game.id + '\'">Detalhes <i class="fas fa-arrow-right"></i></a>' +
+                '<a class="game-card-btn" onclick="event.stopPropagation(); window.location.href=\'detalhes.html?id=' + game.id + '\'">' + t('game.detalhes') + ' <i class="fas fa-arrow-right"></i></a>' +
             '</div>' +
         '</div>';
     return card;
@@ -498,8 +498,8 @@ function renderGamesGrid(containerId, games, options) {
         container.innerHTML =
             '<div class="empty-state" style="grid-column: 1/-1;">' +
                 '<div class="empty-state-icon"><i class="fas fa-gamepad"></i></div>' +
-                '<h3 class="empty-state-title">Nenhum jogo encontrado</h3>' +
-                '<p class="empty-state-desc">Tente ajustar os filtros ou pesquisar outro termo.</p>' +
+                '<h3 class="empty-state-title">' + t('estado.vazio.titulo') + '</h3>' +
+                '<p class="empty-state-desc">' + t('estado.vazio.desc') + '</p>' +
             '</div>';
         return;
     }
@@ -574,13 +574,13 @@ function renderBannerCarousel(games) {
                 '<div class="banner-content">' +
                     '<span class="banner-category">' + (g.categoria || '') + archiveBadge + '</span>' +
                     '<h1 class="banner-title">' + g.nome + '</h1>' +
-                    '<p class="banner-desc">' + (g.sinopse || 'Sem descrição') + '</p>' +
+                    '<p class="banner-desc">' + (g.sinopse || t('banner.semDescricao')) + '</p>' +
                     '<div class="banner-buttons">' +
                         '<a class="btn btn-primary btn-lg" href="detalhes.html?id=' + g.id + '&download=1">' +
-                            '<i class="fas fa-download"></i> Baixar' +
+                            '<i class="fas fa-download"></i> ' + t('banner.baixar') +
                         '</a>' +
                         '<a class="btn btn-secondary btn-lg" href="detalhes.html?id=' + g.id + '">' +
-                            '<i class="fas fa-info"></i> Ver Detalhes' +
+                            '<i class="fas fa-info"></i> ' + t('banner.verDetalhes') +
                         '</a>' +
                     '</div>' +
                 '</div>' +
@@ -638,7 +638,8 @@ function renderCategoriesFilter() {
     const categories = ['Todos'].concat(CATEGORIAS_LIST);
     let html = '';
     categories.forEach(function(cat) {
-        html += '<button class="category-chip ' + (CURRENT_CATEGORY === cat ? 'active' : '') + '" onclick="selectCategory(\'' + cat + '\')">' + cat + '</button>';
+        const label = (cat === 'Todos') ? t('game.todos') : cat;
+        html += '<button class="category-chip ' + (CURRENT_CATEGORY === cat ? 'active' : '') + '" data-cat="' + cat + '" onclick="selectCategory(\'' + cat + '\')">' + label + '</button>';
     });
     container.innerHTML = html;
 }
@@ -647,7 +648,7 @@ function selectCategory(cat) {
     CURRENT_CATEGORY = cat;
     const chips = document.querySelectorAll('#categoriesFilter .category-chip');
     chips.forEach(function(chip) {
-        chip.classList.toggle('active', chip.textContent === cat);
+        chip.classList.toggle('active', chip.getAttribute('data-cat') === cat);
     });
     applyGlobalFilter();
     try {
@@ -682,11 +683,11 @@ function applyGlobalFilter() {
     const countEl = document.getElementById('catalogCount');
     if (countEl) {
         if (temFiltroAtivo) {
-            countEl.textContent = filtered.length + ' de ' + all.length + ' jogos' +
-                ((CURRENT_CATEGORY && CURRENT_CATEGORY !== 'Todos') ? ' em "' + CURRENT_CATEGORY + '"' : '') +
-                (term ? ' (pesquisa: "' + term + '")' : '');
+            countEl.textContent = filtered.length + ' ' + t('catalogo.de') + ' ' + all.length + ' ' + t('catalogo.jogos') +
+                ((CURRENT_CATEGORY && CURRENT_CATEGORY !== 'Todos') ? ' ' + t('catalogo.em') + ' "' + CURRENT_CATEGORY + '"' : '') +
+                (term ? ' (' + t('catalogo.pesquisa') + ': "' + term + '")' : '');
         } else {
-            countEl.textContent = all.length + ' jogos no total';
+            countEl.textContent = all.length + ' ' + t('catalogo.jogosTotal');
         }
     }
 
@@ -813,6 +814,16 @@ function ensureI18nApplied() {
     ensureLangSelectorInNav();
 }
 
+// Re-renderiza os conteúdos gerados por JS ao trocar de idioma.
+// Páginas específicas (categorias, favoritos, detalhes) podem sobrescrever.
+function updateDynamicTitles() {
+    if (!ALL_GAMES || ALL_GAMES.length === 0) return;
+    if (document.getElementById('bannerCarousel')) renderBannerCarousel(ALL_GAMES);
+    if (document.getElementById('categoriesFilter')) renderCategoriesFilter();
+    if (typeof applyGlobalFilter === 'function') applyGlobalFilter();
+}
+window.updateDynamicTitles = updateDynamicTitles;
+
 function initApp() {
     window.addEventListener('scroll', headerScrollEffect);
     headerScrollEffect();
@@ -856,31 +867,30 @@ function buildArchiveWarningHTML(game, compact) {
         '<ul class="archive-warning-steps">' +
             '<li class="archive-warning-step">' +
                 '<span class="archive-step-num">1</span>' +
-                '<span>Ao clicar em Baixar, abrirá a página oficial do arquivo no seu navegador.</span>' +
+                '<span>' + t('archive.step1') + '</span>' +
             '</li>' +
             '<li class="archive-warning-step">' +
                 '<span class="archive-step-num">2</span>' +
-                '<span>Se aparecer pedido de login, crie uma conta gratuita no Archive.org em 30 segundos (é opcional para muitos ficheiros).</span>' +
+                '<span>' + t('archive.step2') + '</span>' +
             '</li>' +
             '<li class="archive-warning-step">' +
                 '<span class="archive-step-num">3</span>' +
-                '<span>Se já tiver login feito no Archive.org noutra aba, o download inicia automaticamente.</span>' +
+                '<span>' + t('archive.step3') + '</span>' +
             '</li>' +
         '</ul>';
 
     const footerHTML = compact ? '' :
-        '<p class="archive-note">💡 Conta gratuita dá acesso a downloads mais rápidos e ilimitados. Os seus dados permanecem sempre no site oficial do Archive.org — nunca pedimos a sua senha aqui.</p>';
+        '<p class="archive-note">' + t('archive.nota') + '</p>';
+
+    const texto = t('archive.texto').replace('{jogo}', '<strong>' + (game ? game.nome : '') + '</strong>');
 
     return (
-        '<div class="archive-warning" role="note" aria-label="Informação de download no Archive.org">' +
+        '<div class="archive-warning" role="note" aria-label="' + t('archive.aria') + '">' +
             '<div class="archive-warning-header">' +
                 '<div class="archive-warning-icon"><i class="fas fa-archive"></i></div>' +
-                '<p class="archive-warning-title">Este ficheiro está hospedado no Archive.org</p>' +
+                '<p class="archive-warning-title">' + t('archive.titulo') + '</p>' +
             '</div>' +
-            '<p class="archive-warning-text">' +
-                'O jogo <strong>' + (game ? game.nome : '') + '</strong> está guardado em servidores do Internet Archive — uma biblioteca digital sem fins lucrativos. ' +
-                'Para garantir a sua segurança, a autenticação é feita sempre no site oficial deles.' +
-            '</p>' +
+            '<p class="archive-warning-text">' + texto + '</p>' +
             stepsHTML +
             footerHTML +
         '</div>'
@@ -904,9 +914,9 @@ function showArchiveModal(gameId) {
                     '<div id="archiveModalBody"></div>' +
                 '</div>' +
                 '<div class="archive-modal-footer">' +
-                    '<button type="button" class="btn btn-secondary" onclick="closeModal(\'archiveModal\')">Fechar</button>' +
+                    '<button type="button" class="btn btn-secondary" onclick="closeModal(\'archiveModal\')">' + t('archive.fechar') + '</button>' +
                     '<a type="button" class="btn btn-primary" id="archiveModalDownload" href="#" target="_blank" rel="noopener noreferrer">' +
-                        '<i class="fas fa-download"></i> Ir para Download no Archive.org' +
+                        '<i class="fas fa-download"></i> ' + t('archive.irDownload') +
                     '</a>' +
                 '</div>' +
             '</div>';
@@ -929,7 +939,7 @@ function showArchiveModal(gameId) {
                     g.downloads = (g.downloads || 0) + 1;
                     saveGamesData(allGames);
                 }
-                showToast('Abrindo página oficial de download...', 'info');
+                showToast(t('msg.abrindoDownload'), 'info');
             }, 200);
         };
     }
@@ -938,7 +948,7 @@ function showArchiveModal(gameId) {
 
 function smartHandleDownload(gameId, href) {
     if (!href || href === '#') {
-        showToast('Link de download não disponível', 'error');
+        showToast(t('msg.linkIndisponivel'), 'error');
         return false;
     }
     if (isArchiveOrgLink(href)) {
@@ -1002,11 +1012,12 @@ function formatRelativeDate(isoStr) {
         const d = new Date(isoStr);
         const agora = new Date();
         const diff = Math.max(0, Math.floor((agora - d) / 1000));
-        if (diff < 60) return 'agora mesmo';
-        if (diff < 3600) return Math.floor(diff / 60) + ' min atrás';
-        if (diff < 86400) return Math.floor(diff / 3600) + ' h atrás';
-        if (diff < 2592000) return Math.floor(diff / 86400) + ' dias atrás';
-        return d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        if (diff < 60) return t('tempo.agora');
+        if (diff < 3600) return Math.floor(diff / 60) + ' ' + t('tempo.min');
+        if (diff < 86400) return Math.floor(diff / 3600) + ' ' + t('tempo.h');
+        if (diff < 2592000) return Math.floor(diff / 86400) + ' ' + t('tempo.dias');
+        const locales = { pt: 'pt-BR', en: 'en-US', es: 'es-ES' };
+        return d.toLocaleDateString(locales[getCurrentLang()] || 'pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' });
     } catch (e) {
         return '-';
     }
@@ -1023,7 +1034,7 @@ function renderCommentsSection(gameId, containerId) {
         headerHTML =
             '<div class="comments-broken-alert">' +
                 '<i class="fas fa-triangle-exclamation"></i>' +
-                '<span>' + brokenCount + ' usuário' + (brokenCount > 1 ? 's' : '') + ' relatou' + (brokenCount > 1 ? 'ram' : '') + ' link quebrado neste jogo.</span>' +
+                '<span>' + brokenCount + ' ' + t('comments.relatosCount') + '</span>' +
             '</div>';
     }
 
@@ -1032,8 +1043,8 @@ function renderCommentsSection(gameId, containerId) {
         listHTML =
             '<div class="comments-empty">' +
                 '<div class="comments-empty-icon"><i class="fas fa-comments"></i></div>' +
-                '<h4>Sem comentários ainda</h4>' +
-                '<p>Seja o primeiro a deixar a sua opinião sobre este jogo. Se o link de download não estiver a funcionar, marque a opção abaixo para avisar outros usuários.</p>' +
+                '<h4>' + t('comments.semTitulo') + '</h4>' +
+                '<p>' + t('comments.semDesc') + '</p>' +
             '</div>';
     } else {
         listHTML = '<div class="comments-list">';
@@ -1045,8 +1056,8 @@ function renderCommentsSection(gameId, containerId) {
                     '</div>' +
                     '<div class="comment-content">' +
                         '<div class="comment-header">' +
-                            '<span class="comment-name">' + (c.nome || 'Anônimo') + '</span>' +
-                            (c.linkQuebrado ? '<span class="comment-broken-tag"><i class="fas fa-link-slash"></i> Link Quebrado</span>' : '') +
+                            '<span class="comment-name">' + (c.nome || t('comments.anonimo')) + '</span>' +
+                            (c.linkQuebrado ? '<span class="comment-broken-tag"><i class="fas fa-link-slash"></i> ' + t('comments.tagQuebrado') + '</span>' : '') +
                             '<span class="comment-date">' + formatRelativeDate(c.data) + '</span>' +
                         '</div>' +
                         '<div class="comment-text">' + escapeHtml(c.texto) + '</div>' +
@@ -1058,28 +1069,28 @@ function renderCommentsSection(gameId, containerId) {
 
     container.innerHTML =
         '<section class="comments-section">' +
-            '<h2 class="details-section-title"><i class="fas fa-comments"></i> Comentários &amp; Relatos <span class="comments-count">(' + comments.length + ')</span></h2>' +
+            '<h2 class="details-section-title"><i class="fas fa-comments"></i> ' + t('comments.titulo') + ' <span class="comments-count">(' + comments.length + ')</span></h2>' +
             headerHTML +
             '<div class="comment-form-card">' +
-                '<h3 class="comment-form-title"><i class="fas fa-pen"></i> Deixe o seu comentário</h3>' +
+                '<h3 class="comment-form-title"><i class="fas fa-pen"></i> ' + t('comments.form.titulo') + '</h3>' +
                 '<form id="commentForm" data-game-id="' + gameId + '">' +
                     '<div class="comment-form-grid">' +
                         '<div class="comment-field">' +
-                            '<label for="commentNome">Seu nome</label>' +
-                            '<input type="text" id="commentNome" name="nome" placeholder="Como quer ser chamado?" maxlength="60" required>' +
+                            '<label for="commentNome">' + t('comments.label.nome') + '</label>' +
+                            '<input type="text" id="commentNome" name="nome" placeholder="' + t('comments.placeholder.nome') + '" maxlength="60" required>' +
                         '</div>' +
                     '</div>' +
                     '<div class="comment-field">' +
-                        '<label for="commentTexto">Seu comentário</label>' +
-                        '<textarea id="commentTexto" name="texto" placeholder="Conte-nos o que achou do jogo, ou relate um problema com o download..." maxlength="2000" rows="4" required></textarea>' +
+                        '<label for="commentTexto">' + t('comments.label.texto') + '</label>' +
+                        '<textarea id="commentTexto" name="texto" placeholder="' + t('comments.placeholder.mensagem') + '" maxlength="2000" rows="4" required></textarea>' +
                     '</div>' +
                     '<div class="comment-form-footer">' +
                         '<label class="comment-checkbox">' +
                             '<input type="checkbox" id="commentLinkQuebrado" name="linkQuebrado">' +
-                            '<span>Link de download não está a funcionar</span>' +
+                            '<span>' + t('comments.quebrado.label') + '</span>' +
                         '</label>' +
                         '<button type="submit" class="btn btn-primary btn-sm">' +
-                            '<i class="fas fa-paper-plane"></i> Publicar Comentário' +
+                            '<i class="fas fa-paper-plane"></i> ' + t('comments.publicar') +
                         '</button>' +
                     '</div>' +
                 '</form>' +
@@ -1097,7 +1108,7 @@ function renderCommentsSection(gameId, containerId) {
             const nome = nomeInput ? (nomeInput.value || '').trim() : '';
             const texto = textoInput ? (textoInput.value || '').trim() : '';
             if (!nome || !texto) {
-                showToast('Preencha o nome e o comentário', 'warning');
+                showToast(t('msg.preenchaNome'), 'warning');
                 return;
             }
             const added = addGameComment(gameId, {
@@ -1109,7 +1120,7 @@ function renderCommentsSection(gameId, containerId) {
                 if (nomeInput) nomeInput.value = '';
                 if (textoInput) textoInput.value = '';
                 if (brokenInput) brokenInput.checked = false;
-                showToast(added.linkQuebrado ? 'Relato enviado! Obrigado pelo aviso.' : 'Comentário publicado com sucesso!', 'success');
+                showToast(added.linkQuebrado ? t('msg.relatoEnviado') : t('msg.comentarioPublicado'), 'success');
                 renderCommentsSection(gameId, containerId);
                 try {
                     const section = container.querySelector('.comments-section');
@@ -1118,7 +1129,7 @@ function renderCommentsSection(gameId, containerId) {
                     }
                 } catch (err) {}
             } else {
-                showToast('Erro ao publicar comentário', 'error');
+                showToast(t('msg.erroComentario'), 'error');
             }
         });
     }
@@ -1137,17 +1148,12 @@ function escapeHtml(str) {
    ========================================================= */
 function buildDisclaimerHTML() {
     return (
-        '<div class="download-disclaimer" role="note" aria-label="Aviso legal de download">' +
-            '<div class="download-disclaimer-icon">' +
-                '<i class="fas fa-scale-balanced"></i>' +
-            '</div>' +
+        '<div class="download-disclaimer" role="note" aria-label="' + t('disclaimer.aria') + '">' +
+            '<div class="download-disclaimer-icon">⚖️</div>' +
             '<div class="download-disclaimer-content">' +
-                '<h4 class="download-disclaimer-title">Aviso Legal</h4>' +
+                '<h4 class="download-disclaimer-title">' + t('disclaimer.titulo') + '</h4>' +
                 '<p class="download-disclaimer-text">' +
-                    'Os links de download disponibilizados nesta página são <strong>encontrados livremente na internet</strong>. ' +
-                    'Este site <strong>não hospeda nenhum arquivo</strong> em seus servidores — apenas indexa e compartilha endereços públicos. ' +
-                    'Todo o conteúdo aqui apresentado tem como único propósito <strong>fins educacionais e de estudo</strong>. ' +
-                    'Lembre-se: a <strong>pirataria é crime</strong>. Se gostar de um jogo, considere adquiri-lo oficialmente para apoiar os desenvolvedores.' +
+                    t('disclaimer.texto') +
                 '</p>' +
             '</div>' +
         '</div>'

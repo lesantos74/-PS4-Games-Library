@@ -21,7 +21,7 @@ function saveFavorites(favorites) {
         return true;
     } catch (e) {
         console.error('Erro ao guardar favoritos:', e);
-        showToast('Erro ao guardar favoritos', 'error');
+        showToast(t('msg.erroGuardarFavoritos'), 'error');
         return false;
     }
 }
@@ -39,12 +39,12 @@ function toggleFavorite(gameId, event) {
     if (index > -1) {
         favorites.splice(index, 1);
         saveFavorites(favorites);
-        showToast('Removido dos favoritos', 'warning');
+        showToast(t('msg.removidoFavoritos'), 'warning');
         updateFavoriteIcon(gameId, false);
     } else {
         favorites.push(gameId);
         saveFavorites(favorites);
-        showToast('Adicionado aos favoritos ♥', 'success');
+        showToast(t('msg.adicionadoFavoritos'), 'success');
         updateFavoriteIcon(gameId, true);
     }
 

@@ -20,22 +20,23 @@
                 <div class="header-middle">
                     <div class="search-box">
                         <i class="fas fa-search search-icon"></i>
-                        <input type="text" id="searchInput" placeholder="Pesquisar nos favoritos..." autocomplete="off">
+                        <input type="text" id="searchInput" data-i18n="header.busca.placeholderFav" placeholder="Pesquisar nos favoritos..." autocomplete="off">
                     </div>
                     <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
                         <i class="fas fa-bolt"></i>
                     </button>
                 </div>
                 <nav class="nav-menu" id="navMenu">
-                    <a href="index.html" class="nav-link">Início</a>
-                    <a href="index.html#catalogo" class="nav-link">Jogos</a>
-                    <a href="categorias.html" class="nav-link">Categorias</a>
-                    <a href="index.html#maisbaixados" class="nav-link">Mais Baixados</a>
-                    <a href="index.html#recentes" class="nav-link">Recentes</a>
-                    <a href="favoritos.html" class="nav-link active">Favoritos</a>
+                    <a href="index.html" class="nav-link" data-i18n="nav.inicio">Início</a>
+                    <a href="index.html#catalogo" class="nav-link" data-i18n="nav.jogos">Jogos</a>
+                    <a href="categorias.html" class="nav-link" data-i18n="nav.categorias">Categorias</a>
+                    <a href="index.html#maisbaixados" class="nav-link" data-i18n="nav.maisBaixados">Mais Baixados</a>
+                    <a href="index.html#recentes" class="nav-link" data-i18n="nav.recentes">Recentes</a>
+                    <a href="favoritos.html" class="nav-link active" data-i18n="nav.favoritos">Favoritos</a>
                     <a href="admin.html" class="nav-link nav-admin-secret" title="Admin" aria-label="Admin">
                         <i class="fas fa-cog"></i>
                     </a>
+                    <div id="lang-selector" style="margin-left:6px;"></div>
                 </nav>
             </div>
         </div>
@@ -45,15 +46,15 @@
         <div class="container">
 
             <div class="page-header">
-                <h1 class="page-title"><i class="fas fa-heart"></i> Meus Favoritos</h1>
-                <p class="page-subtitle" id="pageSubtitle">Os seus jogos preferidos guardados num só lugar.</p>
+                <h1 class="page-title"><i class="fas fa-heart"></i> <span data-i18n="favoritos.titulo">Meus Favoritos</span></h1>
+                <p class="page-subtitle" id="pageSubtitle" data-i18n="favoritos.subtitulo">Os seus jogos preferidos guardados num só lugar.</p>
             </div>
 
             <section class="section">
                 <div class="section-header" id="sectionHeaderFav" style="display: none;">
-                    <h2 class="section-title"><span id="favCount">0</span> jogo(s) favorito(s)</h2>
+                    <h2 class="section-title"><span id="favCount">0</span> <span id="favCountLabel" data-i18n="favoritos.contagem">jogo(s) favorito(s)</span></h2>
                     <button class="btn btn-danger btn-sm" onclick="clearAllFavorites()">
-                        <i class="fas fa-trash"></i> Limpar todos
+                        <i class="fas fa-trash"></i> <span data-i18n="favoritos.limparTodos">Limpar todos</span>
                     </button>
                 </div>
                 <div class="games-grid" id="favoritesGrid">
@@ -72,18 +73,18 @@
                         <div class="logo-icon">PS4</div>
                         <div class="logo-text"><span>PS4</span> Games Library</div>
                     </a>
-                    <p>Biblioteca completa de jogos e conteúdos para PlayStation 4.</p>
+                    <p data-i18n="footer.brand.texto">Biblioteca completa de jogos e conteúdos para PlayStation 4.</p>
                 </div>
                 <div>
-                    <h4 class="footer-col-title">Navegação</h4>
+                    <h4 class="footer-col-title" data-i18n="footer.atalhos.titulo">Navegação</h4>
                     <ul class="footer-links">
-                        <li><a href="index.html">Início</a></li>
-                        <li><a href="categorias.html">Categorias</a></li>
-                        <li><a href="favoritos.html">Favoritos</a></li>
+                        <li><a href="index.html" data-i18n="nav.inicio">Início</a></li>
+                        <li><a href="categorias.html" data-i18n="nav.categorias">Categorias</a></li>
+                        <li><a href="favoritos.html" data-i18n="nav.favoritos">Favoritos</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="footer-col-title">Top Categorias</h4>
+                    <h4 class="footer-col-title" data-i18n="footer.topCategorias.titulo">Top Categorias</h4>
                     <ul class="footer-links">
                         <li><a href="categorias.html?cat=Ação">Ação</a></li>
                         <li><a href="categorias.html?cat=RPG">RPG</a></li>
@@ -92,7 +93,7 @@
 
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
+                <p data-i18n="footer.direitos">&copy; 2026 PS4 Games Library. Todos os direitos reservados.</p>
             </div>
         </div>
     </footer>
@@ -124,29 +125,29 @@
 
             if (favIds.length === 0) {
                 if (header) header.style.display = 'none';
-                if (subtitle) subtitle.textContent = 'Ainda não tem favoritos. Comece por adicionar jogos aos seus favoritos!';
+                if (subtitle) subtitle.textContent = t('favoritos.subtituloVazio');
                 const container = document.getElementById('favoritesGrid');
                 if (container) {
                     container.innerHTML =
                         '<div class="empty-state" style="grid-column: 1/-1;">' +
                             '<div class="empty-state-icon" style="color: var(--danger);"><i class="fas fa-heart"></i></div>' +
-                            '<h3 class="empty-state-title">Sem favoritos ainda</h3>' +
-                            '<p class="empty-state-desc">Clique no coração nos cartões de jogos para os guardar aqui.</p>' +
-                            '<br><a href="index.html#catalogo" class="btn btn-primary">Explorar Catálogo</a>' +
+                            '<h3 class="empty-state-title">' + t('favoritos.semTitulo') + '</h3>' +
+                            '<p class="empty-state-desc">' + t('favoritos.semDesc') + '</p>' +
+                            '<br><a href="index.html#catalogo" class="btn btn-primary">' + t('favoritos.explorar') + '</a>' +
                         '</div>';
                 }
             } else {
                 if (header) header.style.display = 'flex';
                 if (countEl) countEl.textContent = favoriteGames.length;
-                if (subtitle) subtitle.textContent = 'Os seus jogos preferidos guardados num só lugar.';
+                if (subtitle) subtitle.textContent = t('favoritos.subtitulo');
                 renderGamesGrid('favoritesGrid', favoriteGames);
             }
         }
 
         function clearAllFavorites() {
-            if (confirm('Tem a certeza que deseja remover TODOS os favoritos?')) {
+            if (confirm(t('favoritos.confirmarLimpar'))) {
                 saveFavorites([]);
-                showToast('Todos os favoritos foram removidos', 'warning');
+                showToast(t('favoritos.removidos'), 'warning');
                 renderFavoritesPage();
             }
         }
@@ -156,9 +157,15 @@
             renderFavoritesPage();
         };
 
+        // Re-renderiza conteúdo dinâmico ao trocar de idioma
+        window.updateDynamicTitles = function() {
+            renderFavoritesPage();
+        };
+
         document.addEventListener('DOMContentLoaded', function() {
             headerScrollEffect();
             mobileMenuToggle();
+            renderLangDropdown('lang-selector');
             const overlay = document.getElementById('screenshotModal');
             if (overlay) overlay.addEventListener('click', function(e) { if (e.target === overlay) closeModal('screenshotModal'); });
 

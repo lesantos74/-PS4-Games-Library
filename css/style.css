@@ -2518,17 +2518,20 @@ i.image::before { content: '🖼'; }
     position: relative;
     z-index: 1;
     display: flex;
+    flex-wrap: wrap;
     justify-content: center;
+    align-items: stretch;
+    gap: 18px;
 }
 
 .donation-qr-card {
     background: #fff;
-    padding: 20px;
+    padding: 18px;
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-xl);
     text-align: center;
-    max-width: 260px;
-    width: 100%;
+    max-width: 200px;
+    flex: 1 1 170px;
     position: relative;
 }
 
@@ -2549,6 +2552,20 @@ i.image::before { content: '🖼'; }
 .donation-pix-badge i {
     font-size: 11px;
     color: #FCD34D;
+}
+
+.donation-paypal-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #003087 0%, #0070ba 100%);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 30px;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(0, 112, 186, 0.35);
 }
 
 .donation-qr-img {
